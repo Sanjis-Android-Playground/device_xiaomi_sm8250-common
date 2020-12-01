@@ -131,6 +131,8 @@ on post-fs
     # AW882xx fw load path
     write /sys/module/firmware_class/parameters/path /vendor/firmware
     write /dev/ipa 1
+    # Disable WiFi Aware feature.
+    mount none /dev/null /vendor/etc/permissions/android.hardware.wifi.aware.xml bind
 
 on late-fs
     mount_all /vendor/etc/fstab.qcom --late
