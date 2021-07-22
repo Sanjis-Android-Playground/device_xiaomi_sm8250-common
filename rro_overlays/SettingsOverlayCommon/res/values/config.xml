@@ -62,4 +62,6 @@
     <!-- Show battery cycle count -->
     <bool name="config_show_battery_cycle_count">true</bool>
 
+    <!-- Whether to aggregate for network selection list-->
+    <bool name="config_network_selection_list_aggregation_enabled">true</bool>
 </resources>
