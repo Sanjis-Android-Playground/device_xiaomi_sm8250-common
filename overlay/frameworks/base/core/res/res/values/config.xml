@@ -463,4 +463,7 @@
 
     <!-- Maximum velocity to initiate a fling, as measured in dips per second. -->
      <dimen name="config_viewMaxFlingVelocity">12000dp</dimen>
+
+    <!-- Preferred max refresh rate at AOD & Ambient Display, if supported by the display. -->
+    <integer name="config_aodMaxRefreshRate">60</integer>
 </resources>
