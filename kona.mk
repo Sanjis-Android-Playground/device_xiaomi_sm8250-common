@@ -214,6 +214,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     fastbootd
 
+# Fastcharge
+PRODUCT_PACKAGES += \
+    vendor.lineage.fastcharge@1.0-service.xiaomi_sm8250
+
 # Fingerprint
 ifneq ($(TARGET_IS_TABLET),true)
 PRODUCT_PACKAGES += \
