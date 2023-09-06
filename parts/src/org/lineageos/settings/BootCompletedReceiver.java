@@ -18,6 +18,7 @@
 package org.lineageos.settings;
 
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -28,6 +29,7 @@ import androidx.preference.PreferenceManager;
 
 import org.lineageos.settings.dirac.DiracUtils;
 import org.lineageos.settings.thermal.ThermalUtils;
+import org.lineageos.settings.display.ColorService;
 import org.lineageos.settings.refreshrate.RefreshUtils;
 import org.lineageos.settings.touchsampling.TouchSamplingUtils;
 import org.lineageos.settings.utils.FileUtils;
@@ -50,6 +52,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
         }
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         ThermalUtils.startService(context);
+        ColorService.startService(context);
         RefreshUtils.startService(context);
         TouchSamplingUtils.restoreSamplingValue(context);
         FileUtils.enableService(context);
