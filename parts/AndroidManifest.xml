@@ -118,6 +118,11 @@
             </intent-filter>
         </service>
 
+        <service
+            android:name=".display.ColorService"
+            android:permission="ColorService">
+        </service>
+
         <activity
             android:name=".thermal.ThermalActivity"
             android:exported="false"
@@ -275,5 +280,4 @@
         </service>
 
     </application>
-
 </manifest>
