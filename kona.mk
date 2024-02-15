@@ -155,6 +155,11 @@ PRODUCT_PACKAGES += \
     XiaomiParts \
     DSPVolumeSynchronizer
 
+ifneq ($(TARGET_BUILD_VARIANT),user)
+PRODUCT_VENDOR_PROPERTIES += \
+    persist.vendor.usb.config=mtp,adb
+endif
+
 # Dolby Props
 PRODUCT_VENDOR_PROPERTIES += \
     ro.vendor.dolby.dax.version=DAX3_3.6.1.6_r1 \
