@@ -31,6 +31,29 @@
            <instance>clearkey</instance>
     </interface>
    </hal>
+   <hal format="aidl" optional="true">
+        <name>android.hardware.cas</name>
+        <interface>
+            <name>IMediaCasService</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="aidl" optional="true">
+        <name>android.hardware.health</name>
+        <version>1</version>
+        <interface>
+            <name>IHealth</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="aidl" optional="true">
+        <name>android.hardware.light</name>
+        <version>2</version>
+        <interface>
+            <name>ILights</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
    <hal format="hidl" optional="true">
         <name>android.hardware.media.c2</name>
         <version>1.0-2</version>
@@ -42,9 +65,17 @@
     </hal>
     <hal format="aidl" optional="true">
         <name>android.hardware.power</name>
-        <version>3</version>
+        <version>1-4</version>
         <interface>
             <name>IPower</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="aidl" optional="true">
+        <name>android.hardware.vibrator</name>
+        <version>2</version>
+        <interface>
+            <name>IVibrator</name>
             <instance>default</instance>
         </interface>
     </hal>
@@ -69,6 +100,20 @@
             <instance>default</instance>
         </interface>
     </hal>
+    <hal format="aidl" optional="true">
+         <name>vendor.aospa.power</name>
+        <interface>
+            <name>IPowerFeature</name>
+             <instance>default</instance>
+    </interface>
+   </hal>
+   <hal format="aidl" optional="true">
+        <name>vendor.lineage.health</name>
+        <interface>
+            <name>IChargingControl</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
     <hal format="hidl">
         <name>vendor.qti.hardware.servicetracker</name>
         <version>1.0-2</version>
@@ -77,12 +122,11 @@
             <instance>default</instance>
         </interface>
     </hal>
-    <hal format="hidl">
+    <hal format="aidl">
         <name>vendor.qti.memory.pasrmanager</name>
-        <version>1.0-1</version>
         <interface>
             <name>IPasrManager</name>
-            <instance>pasrhal</instance>
+            <instance>default</instance>
         </interface>
     </hal>
     <hal format="aidl"> 
@@ -115,6 +159,27 @@
             <name>IdpmQmi</name>
             <instance>dpmQmiService</instance>
         </interface>
+    </hal>
+    <hal format="aidl" optional="true">
+        <name>vendor.qti.hardware.power.powermodule</name>
+        <interface>
+            <name>IPowerModule</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="aidl" optional="true">
+         <name>vendor.qti.hardware.perf2</name>
+         <interface>
+             <name>IPerf</name>
+             <instance>default</instance>
+         </interface>
+    </hal>
+    <hal format="aidl" optional="true">
+         <name>vendor.qti.qspmhal</name>
+         <interface>
+             <name>IQspmhal</name>
+             <instance>default</instance>
+         </interface>
     </hal>
     <hal format="hidl" optional="true">
         <name>vendor.display.color</name>
