@@ -352,4 +352,7 @@
     <!-- System Info -->
     <integer name="config_sysCPUTempMultiplier">1000</integer>
 
+    <!-- Whether to show double tap ambient settings -->
+    <bool name="config_supports_double_tap_ambient" translatable="false">true</bool>
+
 </resources>
