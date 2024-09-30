@@ -238,6 +238,11 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     IFAAService
 
+
+# libartpalette
+PRODUCT_HOST_PACKAGES += \
+    libartpalette
+
 # IPACM
 PRODUCT_PACKAGES += \
     ipacm \
