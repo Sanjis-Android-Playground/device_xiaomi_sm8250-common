@@ -92,6 +92,9 @@ persist.vendor.sys.pay                                                          
 # NFC
 persist.vendor.nfc.nxp.lx_debug_mask                                                                u:object_r:vendor_nfc_prop:s0 exact string
 
+# Panel Info
+vendor.panel.                                                                                       u:object_r:vendor_display_prop:s0
+
 # RIL
 ro.vendor.ril                                                                                       u:object_r:vendor_public_vendor_default_prop:s0
 
