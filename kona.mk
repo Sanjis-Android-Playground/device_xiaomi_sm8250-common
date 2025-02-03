@@ -10,6 +10,8 @@ $(call inherit-product, frameworks/native/build/phone-xhdpi-6144-dalvik-heap.mk)
 # Include debug tools
 $(call inherit-product, hardware/samsung-ext/interfaces/debug-tools/debug.mk)
 
+TARGET_BOARD_PLATFORM := kona
+
 # Add common definitions for Qualcomm
 $(call inherit-product, hardware/qcom-caf/common/common.mk)
 
