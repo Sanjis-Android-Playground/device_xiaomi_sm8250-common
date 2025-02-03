@@ -12,6 +12,8 @@ $(call inherit-product, hardware/samsung-ext/interfaces/debug-tools/debug.mk)
 
 TARGET_BOARD_PLATFORM := kona
 
+TARGET_PROVIDES_POWERHAL := true
+
 # Add common definitions for Qualcomm
 $(call inherit-product, hardware/qcom-caf/common/common.mk)
 
