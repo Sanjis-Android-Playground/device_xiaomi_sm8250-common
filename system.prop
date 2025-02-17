@@ -1,3 +1,6 @@
+# Dalvik
+dalvik.vm.dex2oat64.enabled=true
+
 # App compaction
 # disabled app compaction due to app freezes when switching tasks
 persist.sys.appcompact.enable_app_compact=false
