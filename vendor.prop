@@ -226,6 +226,7 @@ ro.hardware.vulkan=adreno
 ro.opengles.version=196610
 vendor.gralloc.disable_ubwc=0
 persist.mm.enable.prefetch=true
+ro.config.avoid_gfx_accel=true
 
 # HVDCP
 persist.vendor.pps.disallowed=1
