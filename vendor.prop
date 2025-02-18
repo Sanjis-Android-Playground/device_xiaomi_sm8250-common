@@ -183,6 +183,16 @@ ro.surface_flinger.set_display_power_timer_ms?=1000
 ro.surface_flinger.use_content_detection_for_refresh_rate=true
 vendor.display.defer_fps_frame_count?=2
 
+# Battery Saving
+persist.radio.add_power_save=1
+pm.sleep_mode=1
+ro.ril.disable.power.collapse=0
+ro.ril.fast.dormancy.rule=1
+ro.ril.fast.dormancy.timeout=3
+ro.mot.eri.losalert.delay=100
+ro.vold.umsdirtyratio=20
+power.saving.mode=1
+
 # DRM
 drm.service.enabled=true
 
