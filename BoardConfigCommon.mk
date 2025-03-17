@@ -164,7 +164,18 @@ BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST := $(ALL_PARTITIONS)
 BOARD_QTI_DYNAMIC_PARTITIONS_SIZE := 9122611200 # (BOARD_SUPER_PARTITION_SIZE - 4MiB)
 
 # Partitions - reserved size
--include vendor/lineage/config/BoardConfigReservedSize.mk
+ifneq ($(BUILD_WITH_GAPPS),true)
+BOARD_PRODUCTIMAGE_EXTFS_INODE_COUNT ?= -1
+ifeq ($(PRODUCT_VIRTUAL_AB_OTA),true)
+BOARD_PRODUCTIMAGE_PARTITION_RESERVED_SIZE ?= 1188036608
+else
+BOARD_PRODUCTIMAGE_PARTITION_RESERVED_SIZE ?= 1957691392
+endif
+BOARD_SYSTEMIMAGE_EXTFS_INODE_COUNT ?= -1
+BOARD_SYSTEMIMAGE_PARTITION_RESERVED_SIZE ?= 1258291200
+BOARD_SYSTEM_EXTIMAGE_EXTFS_INODE_COUNT ?= -1
+BOARD_SYSTEM_EXTIMAGE_PARTITION_RESERVED_SIZE ?= 629145600
+endif
 
 # Platform
 BOARD_VENDOR := xiaomi
@@ -208,7 +219,7 @@ VENDOR_SECURITY_PATCH := $(PLATFORM_SECURITY_PATCH)
 
 # Sepolicy
 include device/qcom/sepolicy_vndr/SEPolicy.mk
-include device/lineage/sepolicy/libperfmgr/sepolicy.mk
+include device/voltage/sepolicy/libperfmgr/sepolicy.mk
 include hardware/samsung-ext/interfaces/sepolicy/SEPolicy.mk
 SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(COMMON_PATH)/sepolicy/private
 SYSTEM_EXT_PUBLIC_SEPOLICY_DIRS += $(COMMON_PATH)/sepolicy/public
