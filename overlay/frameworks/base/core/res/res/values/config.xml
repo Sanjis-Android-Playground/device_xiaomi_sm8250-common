@@ -425,4 +425,7 @@
 
     <!-- Should the pinner service pin the Camera application? -->
      <bool name="config_pinnerCameraApp">false</bool>
+
+    <!-- Whether to play turbulence noise after clicking the play button -->
+     <bool name="config_turbulenceNoise">false</bool>
 </resources>
