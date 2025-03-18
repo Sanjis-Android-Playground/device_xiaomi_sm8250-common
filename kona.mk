@@ -268,6 +268,25 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     vendor.lineage.health-service.default
 
+# Logging
+ SPAMMY_LOG_TAGS := \
+     MiClstc \
+     MiStcImpl \
+     SDM \
+     SRE \
+     android.hardware.power-service-qti \
+     libsensor-boledalgo \
+     libsensor-parseRGB \
+     libsensor-qshcalapi \
+     sensors \
+     vendor.qti.hardware.display.composer-service \
+     vendor.xiaomi.sensor.citsensorservice-service.aidl
+
+ ifneq ($(TARGET_BUILD_VARIANT),eng)
+ PRODUCT_VENDOR_PROPERTIES += \
+     $(foreach tag,$(SPAMMY_LOG_TAGS),log.tag.$(tag)=E)
+ endif
+
 # Media configs
 PRODUCT_PACKAGES += \
     media_codecs_kona.xml \
