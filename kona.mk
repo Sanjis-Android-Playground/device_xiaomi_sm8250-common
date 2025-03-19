@@ -119,6 +119,7 @@ PRODUCT_PACKAGES += \
     libldnhncr \
     libqcompostprocbundle \
     libqcomvisualizer \
+    libloc_net_iface.vendor \
     libqcomvoiceprocessing \
     libreverbwrapper \
     libvisualizer \
