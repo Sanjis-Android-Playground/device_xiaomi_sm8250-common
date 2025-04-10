@@ -1,5 +1,7 @@
 typeattribute hal_fingerprint_default data_between_core_and_vendor_violators;
 
+type vendor_fingerprint_persist_data, file_type, data_file_type;
+
 # Allow the fingerprint HAL to access the fingerprint data files
 allow hal_fingerprint_default fingerprint_data_file:dir rw_dir_perms;
 allow hal_fingerprint_default fingerprint_data_file:file create_file_perms;
