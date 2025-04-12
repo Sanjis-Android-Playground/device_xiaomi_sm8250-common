@@ -463,3 +463,9 @@ on property:sys.boot_completed=1
 on property:sys.boot_completed=1
     # Only owner can acces this node
     chmod 440 /proc/net/unix
+
+service adsprpcd /vendor/bin/adsprpcd
+    class main
+    user media
+    group media
+    disabled
