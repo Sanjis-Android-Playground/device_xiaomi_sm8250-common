@@ -82,9 +82,6 @@ persist.radio.dynamic_sar=false
 persist.mm.enable.prefetch=true
 rild.libpath=/vendor/lib64/libril-qc-hal-qmi.so
 
-# Gfx
-ro.config.avoid_gfx_accel=true
-
 # HWUI
 ro.hwui.render_ahead=2
 
