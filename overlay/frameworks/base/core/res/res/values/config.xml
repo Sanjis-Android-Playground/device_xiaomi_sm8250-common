@@ -300,13 +300,6 @@
         <item>"/vendor/lib64/libllvm-qgl.so"</item>
     </string-array>
 
-    <string-array name="config_deviceDisabledComponents" translatable="false">
-       <item>com.google.android.gms/com.google.android.gms.nearby.discovery.service.DiscoveryService</item>
-       <item>com.google.android.gms/com.google.android.gms.nearby.messages.service.NearbyMessagesService</item>
-       <item>com.google.android.gms/.chimera.GmsIntentOperationService$PersistentTrustedReceiver</item>
-       <item>com.google.android.gms/.stats.service.DropBoxEntryAddedReceiver</item>
-    </string-array>
-   
     <!-- Should the pinner service pin the Home application? -->
     <bool name="config_pinnerHomeApp">false</bool>
 
