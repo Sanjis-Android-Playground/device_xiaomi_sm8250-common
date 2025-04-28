@@ -115,3 +115,6 @@
 /proc/stat u:object_r:proc_stat:s0
 /sys/class/kgsl/kgsl-3d0/gpu_busy_percentage    u:object_r:vendor_sysfs_kgsl:s0
 /sys/class/kgsl/kgsl-3d0/temp                    u:object_r:vendor_sysfs_kgsl:s0
+
+# Label nr_requests in /data partition
+/sys/devices/platform/soc/1d84000.ufshc/host0/target0:0:0/0:0:0:0/block/sda/queue/nr_requests u:object_r:vendor_sysfs_scsi_host:s0
