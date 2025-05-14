@@ -2,8 +2,8 @@ on property:vendor.post_boot.parsed=1
      # IRQ Tuning
      # IRQ 268: msm_drm -> CPU 6
      # IRQ 306: kgsl_3d0_irq -> CPU 4
-     write /proc/irq/268/smp_affinity_list 6
-     write /proc/irq/306/smp_affinity_list 4
+     write /proc/irq/268/smp_affinity_list 2
+     write /proc/irq/306/smp_affinity_list 1
 
     # CPUSets
      setprop dalvik.vm.dex2oat-cpu-set 0,1,2,3,4,5
