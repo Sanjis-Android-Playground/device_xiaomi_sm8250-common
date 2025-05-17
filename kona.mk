@@ -250,6 +250,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_HOST_PACKAGES += \
     libartpalette
 
+# init
+$(call soong_config_set,libinit,vendor_init_lib,//$(LOCAL_PATH):init_xiaomi_kona)
+
 # IPACM
 PRODUCT_PACKAGES += \
     ipacm \
