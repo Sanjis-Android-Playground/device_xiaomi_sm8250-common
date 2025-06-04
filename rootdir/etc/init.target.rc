@@ -93,6 +93,9 @@ on fs && property:ro.build.ab_update=true
 on post-fs
     # set RLIMIT_MEMLOCK to 64KB
     setrlimit 8 65536 65536
+
+    # AW882xx fw load path
+    write /sys/module/firmware_class/parameters/path /vendor/firmware
     write /dev/ipa 1
 
 on late-fs
