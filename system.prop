@@ -1,3 +1,9 @@
+# Infinity-X AboutPhoneAdd commentMore actions
+ro.infinity.soc=Snapdragon 870 5G
+ro.infinity.battery=4520 mAh
+ro.infinity.display=1080 x 2400, 120Hz
+ro.infinity.camera=48MP + 8MP + 5MP
+
 # Dalvik
 dalvik.vm.dex2oat64.enabled=true
 
