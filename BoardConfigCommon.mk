@@ -174,7 +174,6 @@ endif
 
 # Platform
 BOARD_VENDOR := xiaomi
-BOARD_USES_QCOM_HARDWARE := true
 TARGET_BOARD_PLATFORM := kona
 
 # Properties

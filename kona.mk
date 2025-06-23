@@ -7,6 +7,11 @@
 # Setup dalvik vm configs
 $(call inherit-product, frameworks/native/build/phone-xhdpi-6144-dalvik-heap.mk)
 
+# Board
+TARGET_BOARD_PLATFORM := kona
+PRODUCT_USES_QCOM_HARDWARE := true
+PRODUCT_BOARD_PLATFORM := kona
+
 # Include debug tools
 #$(call inherit-product, hardware/samsung-ext/interfaces/debug-tools/debug.mk)
 
@@ -419,7 +424,7 @@ PRODUCT_SOONG_NAMESPACES += \
     hardware/google/interfaces \
     hardware/google/pixel \
     hardware/qcom-caf/common/libqti-perfd-client \
-    hardware/xiaomi \
+    vendor/hardware/xiaomi \
     vendor/qcom/opensource/usb/etc
 
 # Speed profile services and wifi-service to reduce RAM and storage
