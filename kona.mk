@@ -61,6 +61,13 @@ endif
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.vulkan.deqp.level-$(VULKAN_DEQP_LEVEL).xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.vulkan.deqp.level.xml
 
+
+# Kernel
+TARGET_KERNEL_VERSION := 4.19
+TARGET_KERNEL_DIR ?= device/xiaomi/alioth-kernel
+PRODUCT_COPY_FILES += \
+    $(TARGET_KERNEL_DIR)/Image:kernel
+
 # A/B
 ifeq ($(TARGET_IS_VAB),true)
 # Inherit virtual_ab_ota product
