@@ -17,7 +17,6 @@ iorapd.readahead.enable=false
 persist.device_config.runtime_native_boot.iorap_readahead_enable=false
 
 # Bluetooth
-persist.vendor.btstack.enable.twsplus=true
 persist.vendor.bt.a2dp.hal.implementation=true
 
 # Camera
