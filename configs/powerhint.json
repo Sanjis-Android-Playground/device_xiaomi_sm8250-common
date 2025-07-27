@@ -502,37 +502,37 @@
       "PowerHint": "FIXED_PERFORMANCE",
       "Node": "CPUBigPlusClusterMaxFreq",
       "Duration": 0,
-      "Value": "9999999"
+      "Value": "1862401"
     },
     {
       "PowerHint": "FIXED_PERFORMANCE",
       "Node": "CPUBigPlusClusterMinFreq",
       "Duration": 0,
-      "Value": "9999999"
+      "Value": "1190400"
     },
     {
       "PowerHint": "FIXED_PERFORMANCE",
       "Node": "CPUBigClusterMaxFreq",
       "Duration": 0,
-      "Value": "9999999"
+      "Value": "1766400"
     },
     {
       "PowerHint": "FIXED_PERFORMANCE",
       "Node": "CPUBigClusterMinFreq",
       "Duration": 0,
-      "Value": "9999999"
+      "Value": "1286400"
     },
     {
       "PowerHint": "FIXED_PERFORMANCE",
       "Node": "CPULittleClusterMaxFreq",
       "Duration": 0,
-      "Value": "9999999"
+      "Value": "1516800"
     },
     {
       "PowerHint": "FIXED_PERFORMANCE",
       "Node": "CPULittleClusterMinFreq",
       "Duration": 0,
-      "Value": "9999999"
+      "Value": "1171200"
     },
     {
       "PowerHint": "FIXED_PERFORMANCE",
