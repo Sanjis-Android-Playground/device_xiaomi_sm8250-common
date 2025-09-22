@@ -118,9 +118,6 @@
 	    <meta-data
                 android:name="com.android.settings.icon"
                 android:resource="@drawable/ic_thermal_settings" />
-            <meta-data
-                android:name="com.android.settings.order"
-                android:value="1" />
         </activity>
 
         <service
