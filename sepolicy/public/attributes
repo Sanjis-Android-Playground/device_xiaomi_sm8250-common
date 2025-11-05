@@ -1,1 +1,4 @@
+# Aliases for LineageOS SELinux macros not defined in AOSP-based trees
+define(`hal_attribute_lineage', `hal_attribute($1)')
+
 hal_attribute_lineage(mlipay)
