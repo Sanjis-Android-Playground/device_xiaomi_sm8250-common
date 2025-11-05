@@ -162,6 +162,9 @@ PRODUCT_VENDOR_PROPERTIES += \
     persist.vendor.usb.config=mtp,adb
 endif
 
+# GameBar Performance Overlay
+$(call inherit-product, packages/apps/GameBar/gamebar.mk)
+
 # Display
 PRODUCT_PACKAGES += \
     vendor.qti.hardware.display.composer-service
