@@ -1,4 +1,5 @@
-<manifest version="2.0" type="device">
+<manifest version="2.0" type="device" target-level="6" >
+    <kernel target-level="5"/>
     <hal format="aidl" override="true">
         <name>android.hardware.nfc</name>
         <fqname>INfc/default</fqname>
