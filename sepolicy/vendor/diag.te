@@ -1,0 +1,14 @@
+attribute diag_users;
+
+typeattribute rild diag_users;
+typeattribute vendor_netmgrd diag_users;
+typeattribute vendor_cnd diag_users;
+typeattribute vendor_qti diag_users;
+typeattribute vendor_dpmd diag_users;
+typeattribute vendor_adpl diag_users;
+typeattribute vendor_hal_imsrtp diag_users;
+typeattribute hal_sensors_default diag_users;
+typeattribute hal_audio_default diag_users;
+typeattribute hal_graphics_composer_default diag_users;
+
+allow diag_users vendor_diag_device:chr_file rw_file_perms;

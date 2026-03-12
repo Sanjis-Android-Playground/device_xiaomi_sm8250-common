@@ -1,1 +1,4 @@
 allow fsck self:capability kill;
+
+allow fsck sysfs:file getattr;
+allow fsck sysfs:file { read };
