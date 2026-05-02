@@ -242,11 +242,9 @@ PRODUCT_PACKAGES += \
 
 $(call soong_config_set,lineage_health,charging_control_supports_bypass,false)
 
-# Media configs
-PRODUCT_PACKAGES += \
-    media_codecs_c2.xml \
-    media_codecs_performance_c2.xml \
-    video_system_specs.json
+PRODUCT_ODM_PROPERTIES += \
+    debug.stagefright.ccodec=4 \
+    debug.stagefright.omx_default_rank=0
 
 # NFC
 PRODUCT_PACKAGES += \
@@ -296,6 +294,7 @@ PRODUCT_COPY_FILES += \
 
 # QTI
 TARGET_COMMON_QTI_COMPONENTS := \
+    media \
     perf \
     telephony
 
