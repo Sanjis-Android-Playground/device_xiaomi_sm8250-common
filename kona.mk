@@ -298,14 +298,6 @@ PRODUCT_PACKAGES += \
     vendor_dsp_mountpoint \
     vendor_firmware_mnt_mountpoint
 
-# Power
-PRODUCT_PACKAGES += \
-    android.hardware.power-service.lineage-libperfmgr \
-    libqti-perfd-client
-
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/powerhint.json:$(TARGET_COPY_OUT_VENDOR)/etc/powerhint.json
-
 # Public libraries
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/public.libraries.txt:$(TARGET_COPY_OUT_VENDOR)/etc/public.libraries.txt
@@ -314,6 +306,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     libqti_vndfwk_detect.vendor \
     libvndfwk_detect_jni.qti.vendor # Needed by CNE app
+
+# QTI
+TARGET_COMMON_QTI_COMPONENTS := \
+    perf
 
 # Rootdir
 PRODUCT_PACKAGES += \
@@ -331,7 +327,6 @@ PRODUCT_PACKAGES += \
     init.qti.dcvs.sh
 
 PRODUCT_PACKAGES += \
-    init.qcom.power.rc \
     init.qcom.rc \
     init.recovery.qcom.rc \
     init.target.rc \
@@ -346,12 +341,7 @@ PRODUCT_PACKAGES += \
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
     $(LOCAL_PATH) \
-    hardware/google/interfaces \
-    hardware/google/pixel \
-    hardware/lineage/interfaces/power-libperfmgr \
-    hardware/qcom-caf/common/libqti-perfd-client \
-    hardware/xiaomi \
-    vendor/qcom/opensource/usb/etc
+    hardware/xiaomi
 
 # Telephony
 PRODUCT_PACKAGES += \
@@ -368,14 +358,13 @@ PRODUCT_BOOT_JARS += \
     telephony-ext \
     xiaomi-telephony-stub
 
-# Thermal
-PRODUCT_PACKAGES += \
-    android.hardware.thermal-service.qti
-
 # USB
 PRODUCT_PACKAGES += \
     android.hardware.usb-service.qti \
     android.hardware.usb.gadget-service.qti
+
+PRODUCT_SOONG_NAMESPACES += \
+    vendor/qcom/opensource/usb/etc
 
 PRODUCT_PACKAGES += \
     init.qcom.usb.rc \
