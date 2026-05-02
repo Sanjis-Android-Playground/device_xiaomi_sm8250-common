@@ -240,6 +240,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     vendor.lineage.health-service.default
 
+# NFC
+PRODUCT_SOONG_NAMESPACES += \
+    vendor/nxp/opensource/sn100x
+
 $(call soong_config_set,lineage_health,charging_control_supports_bypass,false)
 
 PRODUCT_ODM_PROPERTIES += \
@@ -248,8 +252,11 @@ PRODUCT_ODM_PROPERTIES += \
 
 # NFC
 PRODUCT_PACKAGES += \
+    android.hardware.secure_element@1.2.vendor \
     android.hardware.nfc-service.nxp \
     com.android.nfc_extras \
+    nqnfcinfo \
+    vendor.nxp.hardware.nfc@2.0-service \
     Tag
 
 PRODUCT_COPY_FILES += \

@@ -8,9 +8,10 @@
         <transport>hwbinder</transport>
         <fqname>@1.2::ISecureElement/eSE1</fqname>
     </hal>
-    <hal format="aidl" override="true">
-        <name>vendor.nxp.nxpnfc_aidl</name>
-        <fqname>INxpNfc/default</fqname>
+    <hal format="hidl">
+        <name>vendor.nxp.hardware.nfc</name>
+        <transport>hwbinder</transport>
+        <fqname>@2.0::INqNfc/default</fqname>
     </hal>
     <hal format="hidl">
         <name>vendor.qti.esepowermanager</name>
