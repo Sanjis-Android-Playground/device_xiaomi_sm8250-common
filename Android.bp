@@ -4,15 +4,6 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 
-soong_namespace {
-    imports: [
-        "hardware/lineage/interfaces/power-libperfmgr",
-        "hardware/qcom-caf/common/libqti-perfd-client",
-        "hardware/xiaomi",
-        "vendor/qcom/opensource/usb/etc",
-    ],
-}
-
 soong_config_module_type {
     name: "xiaomi_kona_wifi_install_symlink",
     module_type: "install_symlink",
