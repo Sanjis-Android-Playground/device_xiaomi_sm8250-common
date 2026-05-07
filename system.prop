@@ -1,3 +1,5 @@
+ro.lunaris.maintainer=ꜱᴀɴᴊɪ | サンジ
+
 # Camera
 camera.disable_zsl_mode=true
 vendor.camera.aux.packagelist=org.codeaurora.snapcam,com.android.camera,org.lineageos.aperture,org.lineageos.aperture.dev
