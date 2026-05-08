@@ -6,6 +6,18 @@
   *;
 }
 
+-keep class org.lineageos.settings.display.* {
+  *;
+}
+
+-keep class org.lineageos.settings.hbm.* {
+  *;
+}
+
+-keep class org.lineageos.settings.sensors.* {
+  *;
+}
+
 -keep class org.lineageos.settings.speaker.* {
   *;
 }
@@ -19,5 +31,13 @@
 }
 
 -keep class org.lineageos.settings.thermal.* {
+  *;
+}
+
+-keep class org.lineageos.settings.utils.* {
+  *;
+}
+
+-keep class org.lineageos.settings.widget.* {
   *;
 }
