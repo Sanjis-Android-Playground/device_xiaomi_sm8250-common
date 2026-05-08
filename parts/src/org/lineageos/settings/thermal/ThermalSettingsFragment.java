@@ -462,7 +462,7 @@ public class ThermalSettingsFragment extends SettingsBasePreferenceFragment
 
         @Override
         public boolean filterApp(ApplicationsState.AppEntry entry) {
-            boolean show = !mAllPackagesAdapter.mEntries.contains(entry.info.packageName);
+            boolean show = !mEntryMap.containsKey(entry.info.packageName);
             if (show) {
                 synchronized (mLauncherResolveInfoList) {
                     show = mLauncherResolveInfoList.contains(entry.info.packageName);
