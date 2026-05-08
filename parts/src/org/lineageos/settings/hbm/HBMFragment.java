@@ -29,7 +29,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragment;
 import androidx.preference.PreferenceManager;
-import androidx.preference.TwoStatePreference;
+import androidx.preference.SwitchPreferenceCompat;
 
 import org.lineageos.settings.utils.FileUtils;
 import org.lineageos.settings.R;
@@ -43,8 +43,8 @@ public class HBMFragment extends PreferenceFragment
     public static final String KEY_AUTO_HBM_THRESHOLD = "auto_hbm_threshold";
     public static final String KEY_HBM_DISABLE_TIME = "hbm_disable_time";
 
-    private static TwoStatePreference mHBMModeSwitch;
-    private static TwoStatePreference mAutoHBMSwitch;
+    private static SwitchPreferenceCompat mHBMModeSwitch;
+    private static SwitchPreferenceCompat mAutoHBMSwitch;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -52,11 +52,11 @@ public class HBMFragment extends PreferenceFragment
         addPreferencesFromResource(R.xml.hbm_settings);
 
         // HBM
-        mHBMModeSwitch = (TwoStatePreference) findPreference(KEY_HBM_SWITCH);
+        mHBMModeSwitch = (SwitchPreferenceCompat) findPreference(KEY_HBM_SWITCH);
 	mHBMModeSwitch.setOnPreferenceChangeListener(new HBMModeSwitch(getContext()));
 
         // AutoHBM
-        mAutoHBMSwitch = (TwoStatePreference) findPreference(KEY_AUTO_HBM_SWITCH);
+        mAutoHBMSwitch = (SwitchPreferenceCompat) findPreference(KEY_AUTO_HBM_SWITCH);
         mAutoHBMSwitch.setOnPreferenceChangeListener(this);
         mAutoHBMSwitch.setChecked(PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean(HBMFragment.KEY_AUTO_HBM_SWITCH, false));
     }
