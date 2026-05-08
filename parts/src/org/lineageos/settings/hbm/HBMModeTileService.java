@@ -41,9 +41,9 @@ public class HBMModeTileService extends TileService {
     private BroadcastReceiver screenStateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
+            if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
                 SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-                sharedPrefs.edit().putBoolean(HBM_KEY, false).commit();
+                sharedPrefs.edit().putBoolean(HBM_KEY, false).apply();
                 updateUI(false);
             }
         }

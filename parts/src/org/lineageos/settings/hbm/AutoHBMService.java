@@ -108,9 +108,9 @@ public class AutoHBMService extends Service {
     private BroadcastReceiver mScreenStateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
+            if (Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
                 activateLightSensorRead();
-            } else if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
+            } else if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
                 deactivateLightSensorRead();
             }
         }

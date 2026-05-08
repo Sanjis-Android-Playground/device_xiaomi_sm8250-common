@@ -45,7 +45,7 @@ public class DcDimmingTileService extends TileService {
     private BroadcastReceiver screenStateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
+            if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
                 SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
                 Editor editor = sharedPrefs.edit();
                 editor.putBoolean(DC_DIMMING_ENABLE_KEY, false);
