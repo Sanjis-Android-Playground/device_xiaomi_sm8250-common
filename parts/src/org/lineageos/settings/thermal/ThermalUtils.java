@@ -191,7 +191,7 @@ public final class ThermalUtils {
         }
         FileUtils.writeLine(THERMAL_SCONFIG, state);
 
-        if (state == THERMAL_STATE_BENCHMARK || state == THERMAL_STATE_GAMING) {
+        if (THERMAL_STATE_BENCHMARK.equals(state) || THERMAL_STATE_GAMING.equals(state)) {
             updateTouchModes(packageName);
         } else if (mTouchModeChanged) {
             resetTouchModes();
