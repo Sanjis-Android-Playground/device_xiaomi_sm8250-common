@@ -1,5 +1,8 @@
 ro.lunaris.maintainer=ꜱᴀɴᴊɪ | サンジ
 
+# Dalvik
+dalvik.vm.dex2oat64.enabled=true
+
 # Bluetooth
 persist.vendor.btstack.enable.twsplus=true
 
