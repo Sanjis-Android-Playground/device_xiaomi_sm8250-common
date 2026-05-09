@@ -217,6 +217,9 @@ ro.odm.build.media_performance_class=30
 # NFC
 ro.camera.notify_nfc=1
 
+# Battery Saving
+power.saving.mode=1
+
 # OTG
 persist.sys.oem.otg_support=true
 
