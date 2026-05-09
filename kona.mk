@@ -313,7 +313,8 @@ PRODUCT_PACKAGES += \
     SettingsProviderOverlayCommon \
     SystemUIOverlayCommon \
     TelephonyOverlayCommon \
-    WifiResourcesOverlayCommon
+    WifiResourcesOverlayCommon \
+    SimpleDeviceConfigOverlayCommon
 
 PRODUCT_ENFORCE_RRO_TARGETS := *
 
