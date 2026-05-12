@@ -12,3 +12,5 @@ allow init {
  vendor_framework_file
  vendor_app_file
 }:file mounton;
+allow init tmpfs:blk_file { read open getattr };
+allow init adsprpcd_file:file { mounton };

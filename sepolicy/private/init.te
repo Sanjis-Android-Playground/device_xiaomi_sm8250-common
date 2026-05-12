@@ -14,3 +14,4 @@ allow init simpleperf_app_runner_exec:file getattr;
 allow init tcpdump_exec:file getattr;
 allow init tradeinmode_exec:file getattr;
 allow init vold_prepare_subdirs_exec:file getattr;
+allow init self:capability { sys_nice };
