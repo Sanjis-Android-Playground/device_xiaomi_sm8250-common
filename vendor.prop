@@ -1,4 +1,6 @@
 ro.surface_flinger.supports_background_blur=1
+ro.surface_flinger.uclamp.min=205
+
 # Audio
 aaudio.hw_burst_min_usec=2000
 aaudio.mmap_exclusive_policy=2
