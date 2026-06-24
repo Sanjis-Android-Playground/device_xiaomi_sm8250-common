@@ -162,13 +162,11 @@ PRODUCT_PACKAGES += \
     XiaomiParts \
     DSPVolumeSynchronizer
 
-ifneq ($(TARGET_BUILD_VARIANT),user)
 PRODUCT_VENDOR_PROPERTIES += \
     persist.vendor.usb.config=mtp,adb
-endif
 
 # GameBar Performance Overlay
-$(call inherit-product, packages/apps/GameBar/gamebar.mk)
+#$(call inherit-product, packages/apps/GameBar/gamebar.mk)
 
 # Display
 PRODUCT_PACKAGES += \
@@ -185,7 +183,7 @@ PRODUCT_PACKAGES += \
     vendor.qti.hardware.memtrack-service
 
 # Dolby
-$(call inherit-product, hardware/dolby/dolby.mk)
+#$(call inherit-product, hardware/dolby/dolby.mk)
 
 # DRM
 PRODUCT_PACKAGES += \
@@ -398,7 +396,7 @@ PRODUCT_SOONG_NAMESPACES += \
     $(LOCAL_PATH) \
     hardware/google/interfaces \
     hardware/google/pixel \
-    hardware/lineage/interfaces/power-libperfmgr \
+    hardware/voltage/interfaces/power-libperfmgr \
     hardware/qcom-caf/common/libqti-perfd-client \
     hardware/xiaomi \
     vendor/qcom/opensource/usb/etc
