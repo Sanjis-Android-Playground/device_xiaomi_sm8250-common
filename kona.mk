@@ -94,6 +94,13 @@ PRODUCT_PACKAGES += \
     otapreopt_script
 endif
 
+
+# Axion Kernel Manager
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/kernel/ax_kernel_manager_kona.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/ax_kernel_manager.xml \
+    $(LOCAL_PATH)/rootdir/etc/ax_init_kona.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/ax_init_kona.rc
+
+
 # Audio
 PRODUCT_PACKAGES += \
     android.hardware.audio@6.0-impl \
