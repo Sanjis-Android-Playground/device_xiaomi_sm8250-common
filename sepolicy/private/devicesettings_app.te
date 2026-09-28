@@ -40,3 +40,6 @@ set_prop(devicesettings_app, xiaomi_thermal_profile_prop)
 # init.target.rc is a vendor rc file, so the property triggers are checked
 # against vendor_init before they are accepted.
 get_prop(vendor_init, xiaomi_thermal_profile_prop)
+
+# Allow XiaomiParts to set VPP properties
+set_prop(devicesettings_app, vpp_prop)

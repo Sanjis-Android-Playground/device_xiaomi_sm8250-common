@@ -265,6 +265,20 @@ vendor.usb.use_gadget_hal=1
 ro.config.media_vol_steps=25
 ro.config.vc_call_vol_steps=11
 
+# VPP
+debug.media.video.vpp=false
+debug.media.vpp.enable=false
+ro.vendor.media.video.frc.support=true
+ro.vendor.media.video.vpp.support=true
+vendor.media.vpp.aie.cade=100
+vendor.media.vpp.aie.ltm=1
+vendor.media.vpp.aie.ltmacebrih=0
+vendor.media.vpp.aie.ltmacebril=20
+vendor.media.vpp.aie.ltmacestr=37
+vendor.media.vpp.aie.ltmsatgain=55
+vendor.media.vpp.aie.ltmsatoff=55
+vendor.media.vpp.debug.value.use=false
+
 # WiFi
 wifi.aware.interface=wifi-aware0
 

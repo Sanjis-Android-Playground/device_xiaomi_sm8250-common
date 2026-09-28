@@ -168,4 +168,19 @@
     <!--Display settings fragment -->
     <string name="display_settings_title">Advanced display features</string>
     <string name="display_settings_summary">Display enhancements and advanced controls</string>
+
+    <!-- AI Master Picture Engine -->
+    <string name="screen_enhance_engine_title">AI Master Picture Engine</string>
+    <string name="screen_enhance_engine_summary">Video quality enhancement and motion compensation</string>
+    <string name="screen_enhance_engine_features_category">Engine Features</string>
+    <string name="screen_enhance_engine_omx_hint">Notice: This feature relies on the hardware VPP engine and only takes effect when the video player uses the OMX decoder.</string>
+    <string name="screen_enhance_engine_s2h_title">Video picture quality enhancement</string>
+    <string name="screen_enhance_engine_s2h_summary">SDR to HDR smart video picture quality enhancement, making pictures more vivid.</string>
+    <string name="screen_enhance_engine_memc_title">Dynamic picture compensation</string>
+    <string name="screen_enhance_engine_memc_summary">Real-time motion estimation motion compensation (MEMC) for low frame rate videos to make video playback smoother.\nTurning on this feature will consume slightly more power.</string>
+    <string name="vpp_apps_category_title">Application Settings</string>
+    <string name="vpp_select_apps_title">Manage Video Apps</string>
+    <string name="vpp_select_apps_summary_none">No apps selected</string>
+    <string name="vpp_select_apps_summary_count">%d apps selected</string>
+    <string name="vpp_select_apps_dialog_title">Select Video Apps</string>
 </resources>

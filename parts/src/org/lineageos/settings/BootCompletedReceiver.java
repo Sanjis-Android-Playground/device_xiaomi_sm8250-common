@@ -36,6 +36,7 @@ import org.lineageos.settings.display.DisplaySettingsActivity;
 import org.lineageos.settings.display.DisplayUtils;
 import org.lineageos.settings.refreshrate.RefreshUtils;
 import org.lineageos.settings.touchsampling.TouchSamplingUtils;
+import org.lineageos.settings.vpp.VppUtils;
 
 public class BootCompletedReceiver extends BroadcastReceiver {
 
@@ -55,6 +56,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         ThermalUtils.startService(context);
         ColorService.startService(context);
+        VppUtils.startService(context);
         RefreshUtils.startService(context);
         TouchSamplingUtils.restoreSamplingValue(context);
 

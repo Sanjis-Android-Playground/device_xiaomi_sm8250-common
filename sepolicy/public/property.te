@@ -1,2 +1,5 @@
 # SettingsLib
 system_public_prop(settingslib_prop)
+
+# VPP
+system_public_prop(vpp_prop)
