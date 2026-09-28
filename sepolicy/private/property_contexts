@@ -20,3 +20,8 @@ ro.input.resampling                         u:object_r:exported_default_prop:s0
 
 # XiaomiParts thermal region selector
 persist.sys.xiaomi.thermal.map u:object_r:xiaomi_thermal_profile_prop:s0 exact enum global india
+
+# VPP
+debug.media.vpp.          u:object_r:vpp_prop:s0
+debug.media.video.frc     u:object_r:vpp_prop:s0
+debug.media.video.vpp     u:object_r:vpp_prop:s0
