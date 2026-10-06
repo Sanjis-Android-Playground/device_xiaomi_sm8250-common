@@ -154,6 +154,10 @@
     <string name="screen_true_color_title">True Tone</string>
     <string name="screen_true_color_summary">Automatically adjust screen colors based on ambient lighting to make them more natural and gentle</string>
 
+    <!-- Sunlight mode settings -->
+    <string name="sunlight_mode_title">Sunlight mode</string>
+    <string name="sunlight_mode_summary">Adjust screen colors and contrast in strong light to improve readability when auto-brightness is off</string>
+
     <!--Display settings fragment -->
     <string name="display_settings_title">Advanced display features</string>
     <string name="display_settings_summary">Display enhancements and advanced controls</string>

@@ -27,4 +27,10 @@
         android:defaultValue="false"
         android:title="@string/screen_true_color_title"
         android:summary="@string/screen_true_color_summary" />
+
+    <SwitchPreferenceCompat
+        android:key="sunlight_mode"
+        android:defaultValue="false"
+        android:title="@string/sunlight_mode_title"
+        android:summary="@string/sunlight_mode_summary" />
 </PreferenceScreen>

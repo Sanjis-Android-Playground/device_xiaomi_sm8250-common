@@ -35,6 +35,7 @@ public class ColorService extends Service {
     public static final String DISPPARAM_GIR_OFF = "0xf0000000";
 
     public static final String KEY_TRUE_TONE = TrueToneController.KEY_TRUE_TONE;
+    public static final String KEY_SUNLIGHT_MODE = SunlightController.KEY_SUNLIGHT_MODE;
 
     private static final int DEFAULT_COLOR_MODE = SystemProperties.getInt(
             "persist.sys.sf.native_mode", 258);
@@ -55,10 +56,12 @@ public class ColorService extends Service {
 
     private Handler mHandler = new Handler();
     private AmbientDisplayConfiguration mAmbientConfig;
-    private boolean mIsDozing;
+    private boolean mScreenOn = true;
+    private boolean mIsDozing = false;
     private int mLastAppliedColorMode = -1;
 
     private TrueToneController mTrueToneController;
+    private SunlightController mSunlightController;
 
     private final ContentObserver mSettingObserver = new ContentObserver(mHandler) {
         @Override
@@ -74,6 +77,10 @@ public class ColorService extends Service {
             dlog("onReceive: " + intent.getAction());
             switch (intent.getAction()) {
                 case Intent.ACTION_SCREEN_ON:
+                    mScreenOn = true;
+                    if (mSunlightController != null) {
+                        mSunlightController.onScreenStateChanged(mScreenOn, mIsDozing);
+                    }
                     if (mIsDozing) {
                         mIsDozing = false;
                         mHandler.removeCallbacksAndMessages(null);
@@ -84,6 +91,10 @@ public class ColorService extends Service {
                     }
                     break;
                 case Intent.ACTION_SCREEN_OFF:
+                    mScreenOn = false;
+                    if (mSunlightController != null) {
+                        mSunlightController.onScreenStateChanged(mScreenOn, mIsDozing);
+                    }
                     mHandler.removeCallbacksAndMessages(null);
                     if (!mAmbientConfig.alwaysOnEnabled(UserHandle.USER_CURRENT)) {
                         dlog("AOD is not enabled");
@@ -105,6 +116,9 @@ public class ColorService extends Service {
         dlog("onCreate");
         mAmbientConfig = new AmbientDisplayConfiguration(this);
         mTrueToneController = new TrueToneController(this, mHandler);
+        mSunlightController = new SunlightController(this, mHandler);
+        mSunlightController.onScreenStateChanged(mScreenOn, mIsDozing);
+
         getContentResolver().registerContentObserver(Settings.System.getUriFor(DISPLAY_COLOR_MODE),
                     false, mSettingObserver, UserHandle.USER_CURRENT);
         IntentFilter screenStateFilter = new IntentFilter(Intent.ACTION_SCREEN_ON);
@@ -134,6 +148,9 @@ public class ColorService extends Service {
         dlog("onDestroy");
         if (mTrueToneController != null) {
             mTrueToneController.onDestroy();
+        }
+        if (mSunlightController != null) {
+            mSunlightController.onDestroy();
         }
         getContentResolver().unregisterContentObserver(mSettingObserver);
         unregisterReceiver(mScreenStateReceiver);

@@ -37,6 +37,7 @@ public class DfWrapper {
     public static final int FEATURE_ACNORMAL = 0;
     public static final int FEATURE_INCREASED_CONTRAST = 1;
     public static final int FEATURE_STANDARD = 2;
+    public static final int FEATURE_SUNLIGHT_SCREEN = 12;
     public static final int FEATURE_EXPERT = 26;
     public static final int FEATURE_TRUE_TONE = 32;
 

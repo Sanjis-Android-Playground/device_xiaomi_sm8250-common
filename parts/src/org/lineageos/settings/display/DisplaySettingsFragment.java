@@ -32,10 +32,12 @@ public class DisplaySettingsFragment extends SettingsBasePreferenceFragment impl
         OnPreferenceChangeListener {
 
     public static final String KEY_TRUE_TONE = "screen_true_color";
+    public static final String KEY_SUNLIGHT_MODE = "sunlight_mode";
 
     private SwitchPreferenceCompat mDcDimmingPreference;
     private String DC_DIMMING_ENABLE_KEY;
     private SwitchPreferenceCompat mTrueTonePreference;
+    private SwitchPreferenceCompat mSunlightModePreference;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -59,6 +61,22 @@ public class DisplaySettingsFragment extends SettingsBasePreferenceFragment impl
                 getPreferenceScreen().removePreference(mTrueTonePreference);
             }
         }
+
+        mSunlightModePreference = (SwitchPreferenceCompat) findPreference(KEY_SUNLIGHT_MODE);
+        if (mSunlightModePreference != null) {
+            if (SunlightController.isSupported()) {
+                final boolean autoBrightness = Settings.System.getIntForUser(
+                        requireContext().getContentResolver(),
+                        Settings.System.SCREEN_BRIGHTNESS_MODE, 0, UserHandle.USER_CURRENT)
+                        == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC;
+                mSunlightModePreference.setChecked(Settings.System.getIntForUser(
+                        requireContext().getContentResolver(), KEY_SUNLIGHT_MODE, 0, UserHandle.USER_CURRENT) != 0);
+                mSunlightModePreference.setEnabled(!autoBrightness);
+                mSunlightModePreference.setOnPreferenceChangeListener(this);
+            } else {
+                getPreferenceScreen().removePreference(mSunlightModePreference);
+            }
+        }
     }
 
     @Override
@@ -71,6 +89,12 @@ public class DisplaySettingsFragment extends SettingsBasePreferenceFragment impl
             Settings.System.putIntForUser(requireContext().getContentResolver(),
                     KEY_TRUE_TONE, enabled ? 1 : 0, UserHandle.USER_CURRENT);
             DfWrapper.setDisplayFeature(DfWrapper.FEATURE_TRUE_TONE, enabled ? 1 : 0, 0);
+            return true;
+        }
+        if (KEY_SUNLIGHT_MODE.equals(preference.getKey())) {
+            boolean enabled = (Boolean) newValue;
+            Settings.System.putIntForUser(requireContext().getContentResolver(),
+                    KEY_SUNLIGHT_MODE, enabled ? 1 : 0, UserHandle.USER_CURRENT);
             return true;
         }
         return true;
