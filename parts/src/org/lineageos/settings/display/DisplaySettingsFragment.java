@@ -17,6 +17,9 @@
 package org.lineageos.settings.display;
 
 import android.os.Bundle;
+import android.os.UserHandle;
+import android.provider.Settings;
+
 import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
 import androidx.preference.SwitchPreferenceCompat;
@@ -28,8 +31,11 @@ import com.android.settingslib.widget.SettingsBasePreferenceFragment;
 public class DisplaySettingsFragment extends SettingsBasePreferenceFragment implements
         OnPreferenceChangeListener {
 
+    public static final String KEY_TRUE_TONE = "screen_true_color";
+
     private SwitchPreferenceCompat mDcDimmingPreference;
     private String DC_DIMMING_ENABLE_KEY;
+    private SwitchPreferenceCompat mTrueTonePreference;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -42,12 +48,30 @@ public class DisplaySettingsFragment extends SettingsBasePreferenceFragment impl
         } else {
             getPreferenceScreen().removePreference(mDcDimmingPreference);
         }
+
+        mTrueTonePreference = (SwitchPreferenceCompat) findPreference(KEY_TRUE_TONE);
+        if (mTrueTonePreference != null) {
+            if (TrueToneController.isSupported(getContext())) {
+                mTrueTonePreference.setChecked(Settings.System.getIntForUser(
+                        requireContext().getContentResolver(), KEY_TRUE_TONE, 0, UserHandle.USER_CURRENT) != 0);
+                mTrueTonePreference.setOnPreferenceChangeListener(this);
+            } else {
+                getPreferenceScreen().removePreference(mTrueTonePreference);
+            }
+        }
     }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (DC_DIMMING_ENABLE_KEY.equals(preference.getKey())) {
             return DisplayUtils.setDcDimming((Boolean) newValue);
+        }
+        if (KEY_TRUE_TONE.equals(preference.getKey())) {
+            boolean enabled = (Boolean) newValue;
+            Settings.System.putIntForUser(requireContext().getContentResolver(),
+                    KEY_TRUE_TONE, enabled ? 1 : 0, UserHandle.USER_CURRENT);
+            DfWrapper.setDisplayFeature(DfWrapper.FEATURE_TRUE_TONE, enabled ? 1 : 0, 0);
+            return true;
         }
         return true;
     }

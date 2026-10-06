@@ -146,9 +146,13 @@
     <string name="htsr_enable_summary">Increases touch polling rate to decrease latency</string>    
 
     <!-- DC dimming settings -->
-    <string name="dc_dimming_enable_title">DC Dimming</string>
-    <string name="dc_dimming_enable_summary">Reduces eye strain in low light conditions</string>
-    <string name="dc_dimming_enable_summary_not_supported">DC Dimming is currently not supported by the kernel</string>
+    <string name="dc_dimming_enable_title">Anti-Flicker Mode</string>
+    <string name="dc_dimming_enable_summary">DC Dimming reduces eye strain in low light conditions (Note: reduce image quality)</string>
+    <string name="dc_dimming_enable_summary_not_supported">DC Dimming is not currently supported by the kernel</string>
+  
+    <!-- True tone settings -->
+    <string name="screen_true_color_title">True Tone</string>
+    <string name="screen_true_color_summary">Automatically adjust screen colors based on ambient lighting to make them more natural and gentle</string>
 
     <!--Display settings fragment -->
     <string name="display_settings_title">Advanced display features</string>

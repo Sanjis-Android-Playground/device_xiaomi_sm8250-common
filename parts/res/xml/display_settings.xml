@@ -21,4 +21,10 @@
         android:defaultValue="false"
         android:title="@string/dc_dimming_enable_title"
         android:summary="@string/dc_dimming_enable_summary" />
+
+    <SwitchPreferenceCompat
+        android:key="screen_true_color"
+        android:defaultValue="false"
+        android:title="@string/screen_true_color_title"
+        android:summary="@string/screen_true_color_summary" />
 </PreferenceScreen>

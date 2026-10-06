@@ -34,6 +34,8 @@ public class ColorService extends Service {
     public static final String DISP_PARAM_NODE = "/sys/class/drm/card0-DSI-1/disp_param";
     public static final String DISPPARAM_GIR_OFF = "0xf0000000";
 
+    public static final String KEY_TRUE_TONE = TrueToneController.KEY_TRUE_TONE;
+
     private static final int DEFAULT_COLOR_MODE = SystemProperties.getInt(
             "persist.sys.sf.native_mode", 258);
 
@@ -55,6 +57,8 @@ public class ColorService extends Service {
     private AmbientDisplayConfiguration mAmbientConfig;
     private boolean mIsDozing;
     private int mLastAppliedColorMode = -1;
+
+    private TrueToneController mTrueToneController;
 
     private final ContentObserver mSettingObserver = new ContentObserver(mHandler) {
         @Override
@@ -100,6 +104,7 @@ public class ColorService extends Service {
         super.onCreate();
         dlog("onCreate");
         mAmbientConfig = new AmbientDisplayConfiguration(this);
+        mTrueToneController = new TrueToneController(this, mHandler);
         getContentResolver().registerContentObserver(Settings.System.getUriFor(DISPLAY_COLOR_MODE),
                     false, mSettingObserver, UserHandle.USER_CURRENT);
         IntentFilter screenStateFilter = new IntentFilter(Intent.ACTION_SCREEN_ON);
@@ -127,6 +132,9 @@ public class ColorService extends Service {
     @Override
     public void onDestroy() {
         dlog("onDestroy");
+        if (mTrueToneController != null) {
+            mTrueToneController.onDestroy();
+        }
         getContentResolver().unregisterContentObserver(mSettingObserver);
         unregisterReceiver(mScreenStateReceiver);
         super.onDestroy();
@@ -200,6 +208,9 @@ public class ColorService extends Service {
         }
 
         mLastAppliedColorMode = colorMode;
+        if (mTrueToneController != null) {
+            mTrueToneController.update();
+        }
     }
 
     private static void dlog(String msg) {
