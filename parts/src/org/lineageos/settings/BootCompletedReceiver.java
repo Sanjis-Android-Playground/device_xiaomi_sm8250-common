@@ -40,7 +40,6 @@ public class BootCompletedReceiver extends BroadcastReceiver {
     private static final boolean DEBUG = false;
     private static final String TAG = "XiaomiParts";
     private static final String DC_DIMMING_ENABLE_KEY = "dc_dimming_enable";
-    private static final String HBM_ENABLE_KEY = "hbm_mode";
 
     @Override
     public void onReceive(final Context context, Intent intent) {
@@ -62,7 +61,5 @@ public class BootCompletedReceiver extends BroadcastReceiver {
         if (DisplayUtils.isDcSupported()) {
             DisplayUtils.restoreDcDimming(dcDimmingEnabled);
         }
-        boolean hbmEnabled = sharedPrefs.getBoolean(HBM_ENABLE_KEY, false);
-        DisplayUtils.setHbmEnabled(context, hbmEnabled);
     }
 }

@@ -22,7 +22,6 @@ import androidx.preference.Preference.OnPreferenceChangeListener;
 import androidx.preference.SwitchPreferenceCompat;
 
 import org.lineageos.settings.R;
-import org.lineageos.settings.utils.FileUtils;
 
 import com.android.settingslib.widget.SettingsBasePreferenceFragment;
 
@@ -31,13 +30,10 @@ public class DisplaySettingsFragment extends SettingsBasePreferenceFragment impl
 
     private SwitchPreferenceCompat mDcDimmingPreference;
     private String DC_DIMMING_ENABLE_KEY;
-    private SwitchPreferenceCompat mHBMPreference;
-    private String HBM_ENABLE_KEY;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         DC_DIMMING_ENABLE_KEY = DisplayNodes.getDcDimmingEnableKey();
-        HBM_ENABLE_KEY = DisplayNodes.getHbmEnableKey();
 
         addPreferencesFromResource(R.xml.display_settings);
         mDcDimmingPreference = (SwitchPreferenceCompat) findPreference(DC_DIMMING_ENABLE_KEY);
@@ -46,23 +42,12 @@ public class DisplaySettingsFragment extends SettingsBasePreferenceFragment impl
         } else {
             getPreferenceScreen().removePreference(mDcDimmingPreference);
         }
-        mHBMPreference = (SwitchPreferenceCompat) findPreference(HBM_ENABLE_KEY);
-        if (FileUtils.fileExists(DisplayNodes.getHbmNode())) {
-            mHBMPreference.setEnabled(true);
-            mHBMPreference.setOnPreferenceChangeListener(this);
-        } else {
-            mHBMPreference.setSummary(R.string.hbm_enable_summary_not_supported);
-            mHBMPreference.setEnabled(false);
-        }
     }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (DC_DIMMING_ENABLE_KEY.equals(preference.getKey())) {
             return DisplayUtils.setDcDimming((Boolean) newValue);
-        }
-        if (HBM_ENABLE_KEY.equals(preference.getKey())) {
-            return DisplayUtils.setHbmEnabled(requireContext(), (Boolean) newValue);
         }
         return true;
     }
