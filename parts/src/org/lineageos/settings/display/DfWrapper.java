@@ -34,6 +34,28 @@ public class DfWrapper {
         return mDisplayFeature;
     }
 
+    public static final int FEATURE_ACNORMAL = 0;
+    public static final int FEATURE_INCREASED_CONTRAST = 1;
+    public static final int FEATURE_STANDARD = 2;
+    public static final int FEATURE_EXPERT = 26;
+
+    public static final int EXPERT_GAMUT = 0;
+    public static final int EXPERT_R = 1;
+    public static final int EXPERT_G = 2;
+    public static final int EXPERT_B = 3;
+    public static final int EXPERT_HUE = 4;
+    public static final int EXPERT_SATURATION = 5;
+    public static final int EXPERT_VALUE = 6;
+    public static final int EXPERT_CONTRAST = 7;
+    public static final int EXPERT_GAMMA = 8;
+    public static final int EXPERT_CLEAR = 9;
+    public static final int EXPERT_RESTORE = 10;
+    public static final int EXPERT_DISABLE = 11;
+
+    public static boolean setDisplayFeature(int mode, int value, int cookie) {
+        return setDisplayFeature(new DfParams(mode, value, cookie));
+    }
+
     public static boolean setDisplayFeature(DfParams params) {
         final IDisplayFeature displayFeature = getDisplayFeature();
         if (displayFeature == null) {
@@ -47,6 +69,24 @@ public class DfWrapper {
         } catch (Exception e) {
             Log.e(TAG, "setDisplayFeatureParams failed!", e);
             return false;
+        }
+    }
+
+    public static void sendMessage(int index, int value) {
+        sendMessage(index, value, "");
+    }
+
+    public static void sendMessage(int index, int value, String cmd) {
+        final IDisplayFeature displayFeature = getDisplayFeature();
+        if (displayFeature == null) {
+            Log.e(TAG, "sendMessage: displayFeature is null!");
+            return;
+        }
+        Log.d(TAG, "sendMessage: index=" + index + ", value=" + value + ", cmd=" + cmd);
+        try {
+            displayFeature.sendMessage(index, value, cmd != null ? cmd : "");
+        } catch (Exception e) {
+            Log.e(TAG, "sendMessage failed! index=" + index + ", value=" + value, e);
         }
     }
 

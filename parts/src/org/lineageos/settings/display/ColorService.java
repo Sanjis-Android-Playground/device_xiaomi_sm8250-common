@@ -23,33 +23,38 @@ import android.os.UserHandle;
 import android.provider.Settings;
 import android.util.Log;
 
-import java.util.Map;
+import org.lineageos.settings.utils.FileUtils;
 
-import org.lineageos.settings.display.DfWrapper.DfParams;
+import java.util.Map;
 
 public class ColorService extends Service {
     private static final String TAG = "ColorService";
     private static final boolean DEBUG = true;
 
-    private static final int DEFAULT_COLOR_MODE = SystemProperties.getInt(
-            "persist.sys.sf.native_mode", 0);
+    public static final String DISP_PARAM_NODE = "/sys/class/drm/card0-DSI-1/disp_param";
+    public static final String DISPPARAM_GIR_OFF = "0xf0000000";
 
-    private static final DfParams STANDARD_PARAMS = new DfParams(0, 2, 255);
+    private static final int DEFAULT_COLOR_MODE = SystemProperties.getInt(
+            "persist.sys.sf.native_mode", 258);
+
+    private static final DfParams STANDARD_PARAMS = new DfParams(
+            DfWrapper.FEATURE_ACNORMAL, 2, 255);
 
     /* color mode -> displayfeature (mode, value, cookie) */
     private static final Map<Integer, DfParams> COLOR_MAP = Map.of(
         258 /* Vivid */, STANDARD_PARAMS,
-        256 /* Saturated */, new DfParams(1, 2, 255),
-        257 /* Original */, new DfParams(2, 2, 255),
-        266 /* expert-native */, new DfParams(26, 2, 0),
-        269 /* expert-wcg-srgb */, new DfParams(26, 1, 0),
-        268 /* expert-dcip3 */, new DfParams(26, 2, 0),
-        267 /* expert-srgb */, new DfParams(26, 3, 0)
+        256 /* Saturated */, new DfParams(DfWrapper.FEATURE_INCREASED_CONTRAST, 2, 255),
+        257 /* Original */, new DfParams(DfWrapper.FEATURE_STANDARD, 2, 255),
+        266 /* expert-native */, new DfParams(DfWrapper.FEATURE_EXPERT, 0, 0),
+        269 /* expert-wcg-srgb */, new DfParams(DfWrapper.FEATURE_EXPERT, 1, 0),
+        268 /* expert-dcip3 */, new DfParams(DfWrapper.FEATURE_EXPERT, 2, 0),
+        267 /* expert-srgb */, new DfParams(DfWrapper.FEATURE_EXPERT, 3, 0)
     );
 
     private Handler mHandler = new Handler();
     private AmbientDisplayConfiguration mAmbientConfig;
     private boolean mIsDozing;
+    private int mLastAppliedColorMode = -1;
 
     private final ContentObserver mSettingObserver = new ContentObserver(mHandler) {
         @Override
@@ -75,15 +80,16 @@ public class ColorService extends Service {
                     }
                     break;
                 case Intent.ACTION_SCREEN_OFF:
+                    mHandler.removeCallbacksAndMessages(null);
                     if (!mAmbientConfig.alwaysOnEnabled(UserHandle.USER_CURRENT)) {
                         dlog("AOD is not enabled");
                         mIsDozing = false;
                         break;
                     }
                     mIsDozing = true;
-                    mHandler.removeCallbacksAndMessages(null);
                     dlog("Entered AOD, set color mode to standard");
                     DfWrapper.setDisplayFeature(STANDARD_PARAMS);
+                    mLastAppliedColorMode = -1;
                     break;
             }
         }
@@ -99,6 +105,16 @@ public class ColorService extends Service {
         IntentFilter screenStateFilter = new IntentFilter(Intent.ACTION_SCREEN_ON);
         screenStateFilter.addAction(Intent.ACTION_SCREEN_OFF);
         registerReceiver(mScreenStateReceiver, screenStateFilter);
+
+        // Ensure legacy display_color_adjustment is reset so it does not conflict with DisplayFeature PCC
+        final String adj = Settings.System.getStringForUser(getContentResolver(),
+                "display_color_adjustment", UserHandle.USER_CURRENT);
+        if (adj != null && !adj.isEmpty() && !"1.0 1.0 1.0".equals(adj)) {
+            dlog("onCreate: clearing legacy display_color_adjustment (" + adj + ")");
+            Settings.System.putStringForUser(getContentResolver(),
+                    "display_color_adjustment", "1.0 1.0 1.0", UserHandle.USER_CURRENT);
+        }
+
         setCurrentColorMode();
     }
 
@@ -125,6 +141,17 @@ public class ColorService extends Service {
         context.startServiceAsUser(new Intent(context, ColorService.class), UserHandle.CURRENT);
     }
 
+    private static boolean isExpertMode(int mode) {
+        return mode == 266 || mode == 269 || mode == 268 || mode == 267;
+    }
+
+    public static void setGirOff() {
+        if (FileUtils.fileExists(DISP_PARAM_NODE)) {
+            dlog("setGirOff: writing " + DISPPARAM_GIR_OFF + " to " + DISP_PARAM_NODE);
+            FileUtils.writeLine(DISP_PARAM_NODE, DISPPARAM_GIR_OFF);
+        }
+    }
+
     private void setCurrentColorMode() {
         if (mIsDozing) {
             dlog("setCurrentColorMode: skip in AOD");
@@ -137,8 +164,42 @@ public class ColorService extends Service {
             return;
         }
         final DfParams params = COLOR_MAP.get(colorMode);
-        dlog("setCurrentColorMode: " + colorMode + ", params=" + params);
+        dlog("setCurrentColorMode: " + colorMode + ", params=" + params
+                + " (lastApplied=" + mLastAppliedColorMode + ")");
+
+        if (mLastAppliedColorMode != -1 && mLastAppliedColorMode != colorMode) {
+            dlog("setCurrentColorMode: tearing down previous mode " + mLastAppliedColorMode);
+            if (mLastAppliedColorMode == 256) {
+                DfWrapper.setDisplayFeature(DfWrapper.FEATURE_INCREASED_CONTRAST, 0, 0);
+            } else if (mLastAppliedColorMode == 257 || mLastAppliedColorMode == 269) {
+                DfWrapper.setDisplayFeature(DfWrapper.FEATURE_ACNORMAL, 0, 0);
+                if (mLastAppliedColorMode == 269 && !isExpertMode(colorMode)) {
+                    DfWrapper.setDisplayFeature(DfWrapper.FEATURE_EXPERT, 0, DfWrapper.EXPERT_DISABLE);
+                }
+            } else if (mLastAppliedColorMode == 258) {
+                DfWrapper.setDisplayFeature(DfWrapper.FEATURE_ACNORMAL, 0, 0);
+            } else if (isExpertMode(mLastAppliedColorMode) && !isExpertMode(colorMode)) {
+                DfWrapper.setDisplayFeature(DfWrapper.FEATURE_EXPERT, 0, DfWrapper.EXPERT_DISABLE);
+            }
+        }
+
+        if (colorMode == 257 && !isExpertMode(mLastAppliedColorMode)) {
+            dlog("setCurrentColorMode: pre-transitioning via expert mode for D65 white point");
+            DfWrapper.setDisplayFeature(DfWrapper.FEATURE_EXPERT, 1, DfWrapper.EXPERT_GAMUT);
+        }
+
         DfWrapper.setDisplayFeature(params);
+
+        if (colorMode == 266) {
+            setGirOff();
+            mHandler.postDelayed(ColorService::setGirOff, 50);
+        }
+
+        if (colorMode == 257 || colorMode == 269) {
+            DfWrapper.sendMessage(39, colorMode);
+        }
+
+        mLastAppliedColorMode = colorMode;
     }
 
     private static void dlog(String msg) {
