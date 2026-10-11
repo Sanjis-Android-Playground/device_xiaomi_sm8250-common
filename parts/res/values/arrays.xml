@@ -121,4 +121,17 @@
         <item>2</item>
         <item>3</item>
     </string-array> 
+
+    <!-- Adaptive AOD brightness -->
+    <string-array name="doze_brightness_entries">
+        <item>@string/doze_brightness_adaptive</item>
+        <item>@string/doze_brightness_high</item>
+        <item>@string/doze_brightness_low</item>
+    </string-array>
+
+    <string-array name="doze_brightness_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
 </resources>

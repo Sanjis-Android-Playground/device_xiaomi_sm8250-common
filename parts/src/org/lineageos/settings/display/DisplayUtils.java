@@ -22,6 +22,9 @@ public final class DisplayUtils {
 
     private static final String DC_PROP = "persist.vendor.dc_backlight.enable";
 
+    private static final String BL_DF_NODE =
+            "/sys/class/backlight/panel0-backlight/bl_df";
+
     private DisplayUtils() {
     }
 
@@ -39,6 +42,9 @@ public final class DisplayUtils {
         final boolean success = DfWrapper.setDisplayFeature(
                 new DfWrapper.DfParams(DC_MODE_ID, value, DC_COOKIE));
         if (success) {
+            if (!enabled && FileUtils.fileExists(BL_DF_NODE)) {
+                FileUtils.writeLine(BL_DF_NODE, "0");
+            }
             return true;
         }
 

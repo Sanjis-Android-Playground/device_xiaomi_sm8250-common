@@ -38,6 +38,7 @@ ro.vendor.colorpick_adjust                      u:object_r:vendor_displayfeature
 ro.vendor.df.effect.conflict                    u:object_r:vendor_displayfeature_prop:s0
 ro.vendor.dfps.enable                           u:object_r:vendor_displayfeature_prop:s0
 ro.vendor.display.default_fps                   u:object_r:vendor_displayfeature_prop:s0
+ro.vendor.display.doze_brightness.enable       u:object_r:vendor_displayfeature_prop:s0
 ro.vendor.display.smartpen.idle.enable          u:object_r:vendor_displayfeature_prop:s0
 ro.vendor.display.sunlight.enable              u:object_r:vendor_displayfeature_prop:s0
 ro.vendor.display.touch.idle.enable             u:object_r:vendor_displayfeature_prop:s0

@@ -157,7 +157,14 @@
     <!-- Sunlight mode settings -->
     <string name="sunlight_mode_title">Sunlight mode</string>
     <string name="sunlight_mode_summary">Adjust screen colors and contrast in strong light to improve readability when auto-brightness is off</string>
-
+    
+    <!-- AOD brightness settings -->
+    <string name="doze_brightness_title">AOD brightness</string>
+    <string name="doze_brightness_summary">Adjust screen brightness for Always-On Display</string>
+    <string name="doze_brightness_adaptive">Automatic (Sensor)</string>
+    <string name="doze_brightness_high">High brightness (170 nits)</string>
+    <string name="doze_brightness_low">Low brightness (10 nits)</string>
+   
     <!--Display settings fragment -->
     <string name="display_settings_title">Advanced display features</string>
     <string name="display_settings_summary">Display enhancements and advanced controls</string>

@@ -9,6 +9,8 @@ package org.lineageos.settings.display;
 import android.os.IHwBinder.DeathRecipient;
 import android.util.Log;
 
+import org.lineageos.settings.utils.FileUtils;
+
 import vendor.xiaomi.hardware.displayfeature.V1_0.IDisplayFeature;
 
 public class DfWrapper {
@@ -38,8 +40,24 @@ public class DfWrapper {
     public static final int FEATURE_INCREASED_CONTRAST = 1;
     public static final int FEATURE_STANDARD = 2;
     public static final int FEATURE_SUNLIGHT_SCREEN = 12;
+    public static final int FEATURE_DOZE_BRIGHTNESS = 25;
     public static final int FEATURE_EXPERT = 26;
     public static final int FEATURE_TRUE_TONE = 32;
+
+    public static final int DOZE_TO_NORMAL = 0;
+    public static final int DOZE_BRIGHTNESS_HBM = 1;
+    public static final int DOZE_BRIGHTNESS_LBM = 2;
+
+    public static final String DOZE_BRIGHTNESS_NODE =
+            "/sys/class/drm/card0-DSI-1/doze_brightness";
+
+    public static boolean setDozeBrightness(int mode) {
+        boolean success = setDisplayFeature(FEATURE_DOZE_BRIGHTNESS, mode, 255);
+        if (FileUtils.fileExists(DOZE_BRIGHTNESS_NODE)) {
+            FileUtils.writeLine(DOZE_BRIGHTNESS_NODE, String.valueOf(mode));
+        }
+        return success;
+    }
 
     public static final int EXPERT_GAMUT = 0;
     public static final int EXPERT_R = 1;

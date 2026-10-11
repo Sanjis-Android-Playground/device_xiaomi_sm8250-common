@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.os.UserHandle;
 import android.provider.Settings;
 
+import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
 import androidx.preference.SwitchPreferenceCompat;
@@ -33,11 +34,13 @@ public class DisplaySettingsFragment extends SettingsBasePreferenceFragment impl
 
     public static final String KEY_TRUE_TONE = "screen_true_color";
     public static final String KEY_SUNLIGHT_MODE = "sunlight_mode";
+    public static final String KEY_DOZE_BRIGHTNESS = "doze_brightness_mode";
 
     private SwitchPreferenceCompat mDcDimmingPreference;
     private String DC_DIMMING_ENABLE_KEY;
     private SwitchPreferenceCompat mTrueTonePreference;
     private SwitchPreferenceCompat mSunlightModePreference;
+    private ListPreference mDozeBrightnessPreference;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -77,6 +80,21 @@ public class DisplaySettingsFragment extends SettingsBasePreferenceFragment impl
                 getPreferenceScreen().removePreference(mSunlightModePreference);
             }
         }
+
+        mDozeBrightnessPreference = (ListPreference) findPreference(KEY_DOZE_BRIGHTNESS);
+        if (mDozeBrightnessPreference != null) {
+            if (DozeBrightnessController.isSupported()) {
+                final int mode = Settings.System.getIntForUser(
+                        requireContext().getContentResolver(), KEY_DOZE_BRIGHTNESS, 0, UserHandle.USER_CURRENT);
+                mDozeBrightnessPreference.setValue(String.valueOf(mode));
+                if (mDozeBrightnessPreference.getEntry() != null) {
+                    mDozeBrightnessPreference.setSummary(mDozeBrightnessPreference.getEntry());
+                }
+                mDozeBrightnessPreference.setOnPreferenceChangeListener(this);
+            } else {
+                getPreferenceScreen().removePreference(mDozeBrightnessPreference);
+            }
+        }
     }
 
     @Override
@@ -95,6 +113,16 @@ public class DisplaySettingsFragment extends SettingsBasePreferenceFragment impl
             boolean enabled = (Boolean) newValue;
             Settings.System.putIntForUser(requireContext().getContentResolver(),
                     KEY_SUNLIGHT_MODE, enabled ? 1 : 0, UserHandle.USER_CURRENT);
+            return true;
+        }
+        if (KEY_DOZE_BRIGHTNESS.equals(preference.getKey())) {
+            int value = Integer.parseInt((String) newValue);
+            Settings.System.putIntForUser(requireContext().getContentResolver(),
+                    KEY_DOZE_BRIGHTNESS, value, UserHandle.USER_CURRENT);
+            int index = ((ListPreference) preference).findIndexOfValue((String) newValue);
+            if (index >= 0) {
+                preference.setSummary(((ListPreference) preference).getEntries()[index]);
+            }
             return true;
         }
         return true;

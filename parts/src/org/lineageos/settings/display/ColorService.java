@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Paranoid Android
+ * Copyright (C) 2023-2026 Paranoid Android
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -10,18 +10,17 @@ import static android.provider.Settings.System.DISPLAY_COLOR_MODE;
 import static org.lineageos.settings.display.DfWrapper.DfParams;
 
 import android.app.Service;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.database.ContentObserver;
-import android.hardware.display.AmbientDisplayConfiguration;
+import android.hardware.display.DisplayManager;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.SystemProperties;
 import android.os.UserHandle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.Display;
 
 import org.lineageos.settings.utils.FileUtils;
 
@@ -34,8 +33,10 @@ public class ColorService extends Service {
     public static final String DISP_PARAM_NODE = "/sys/class/drm/card0-DSI-1/disp_param";
     public static final String DISPPARAM_GIR_OFF = "0xf0000000";
 
+    // Forwarding keys for external callers
     public static final String KEY_TRUE_TONE = TrueToneController.KEY_TRUE_TONE;
     public static final String KEY_SUNLIGHT_MODE = SunlightController.KEY_SUNLIGHT_MODE;
+    public static final String KEY_DOZE_BRIGHTNESS = DozeBrightnessController.KEY_DOZE_BRIGHTNESS;
 
     private static final int DEFAULT_COLOR_MODE = SystemProperties.getInt(
             "persist.sys.sf.native_mode", 258);
@@ -54,76 +55,108 @@ public class ColorService extends Service {
         267 /* expert-srgb */, new DfParams(DfWrapper.FEATURE_EXPERT, 3, 0)
     );
 
-    private Handler mHandler = new Handler();
-    private AmbientDisplayConfiguration mAmbientConfig;
+    private final Handler mHandler = new Handler();
+    private DisplayManager mDisplayManager;
+
     private boolean mScreenOn = true;
     private boolean mIsDozing = false;
     private int mLastAppliedColorMode = -1;
 
+    // Decoupled controllers
     private TrueToneController mTrueToneController;
     private SunlightController mSunlightController;
+    private DozeBrightnessController mDozeBrightnessController;
+
+    private final Runnable mRestoreColorModeRunnable = () -> {
+        dlog("Was in AOD, restore color mode");
+        setCurrentColorMode();
+    };
 
     private final ContentObserver mSettingObserver = new ContentObserver(mHandler) {
         @Override
-        public void onChange(boolean selfChange) {
-            dlog("SettingObserver: onChange");
+        public void onChange(boolean selfChange, android.net.Uri uri) {
+            dlog("SettingObserver: onChange: " + uri);
             setCurrentColorMode();
         }
     };
 
-    private final BroadcastReceiver mScreenStateReceiver = new BroadcastReceiver() {
+    private final DisplayManager.DisplayListener mDisplayListener = new DisplayManager.DisplayListener() {
         @Override
-        public void onReceive(Context context, Intent intent) {
-            dlog("onReceive: " + intent.getAction());
-            switch (intent.getAction()) {
-                case Intent.ACTION_SCREEN_ON:
-                    mScreenOn = true;
-                    if (mSunlightController != null) {
-                        mSunlightController.onScreenStateChanged(mScreenOn, mIsDozing);
-                    }
-                    if (mIsDozing) {
-                        mIsDozing = false;
-                        mHandler.removeCallbacksAndMessages(null);
-                        mHandler.postDelayed(() -> {
-                            dlog("Was in AOD, restore color mode");
-                            setCurrentColorMode();
-                        }, 100);
-                    }
-                    break;
-                case Intent.ACTION_SCREEN_OFF:
-                    mScreenOn = false;
-                    if (mSunlightController != null) {
-                        mSunlightController.onScreenStateChanged(mScreenOn, mIsDozing);
-                    }
-                    mHandler.removeCallbacksAndMessages(null);
-                    if (!mAmbientConfig.alwaysOnEnabled(UserHandle.USER_CURRENT)) {
-                        dlog("AOD is not enabled");
-                        mIsDozing = false;
-                        break;
-                    }
+        public void onDisplayAdded(int displayId) {}
+
+        @Override
+        public void onDisplayRemoved(int displayId) {}
+
+        @Override
+        public void onDisplayChanged(int displayId) {
+            if (displayId != Display.DEFAULT_DISPLAY || mDisplayManager == null) return;
+            Display display = mDisplayManager.getDisplay(Display.DEFAULT_DISPLAY);
+            if (display == null) return;
+            final int state = display.getState();
+            dlog("onDisplayChanged: state=" + state);
+            handleDisplayStateChange(state);
+        }
+    };
+
+    private void handleDisplayStateChange(int state) {
+        switch (state) {
+            case Display.STATE_DOZE:
+            case Display.STATE_DOZE_SUSPEND:
+                mScreenOn = false;
+                if (!mIsDozing) {
                     mIsDozing = true;
                     dlog("Entered AOD, set color mode to standard");
                     DfWrapper.setDisplayFeature(STANDARD_PARAMS);
                     mLastAppliedColorMode = -1;
-                    break;
-            }
+                }
+                break;
+            case Display.STATE_OFF:
+                mScreenOn = false;
+                mIsDozing = false;
+                break;
+            case Display.STATE_ON:
+                mScreenOn = true;
+                if (mIsDozing) {
+                    mIsDozing = false;
+                    mHandler.removeCallbacks(mRestoreColorModeRunnable);
+                    mHandler.postDelayed(mRestoreColorModeRunnable, 100);
+                }
+                break;
+            default:
+                break;
         }
-    };
+
+        if (mSunlightController != null) {
+            mSunlightController.onScreenStateChanged(mScreenOn, mIsDozing);
+        }
+        if (mDozeBrightnessController != null) {
+            mDozeBrightnessController.onDisplayStateChanged(state);
+        }
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
         dlog("onCreate");
-        mAmbientConfig = new AmbientDisplayConfiguration(this);
+        mDisplayManager = getSystemService(DisplayManager.class);
+
+        // Initialize decoupled controllers
         mTrueToneController = new TrueToneController(this, mHandler);
         mSunlightController = new SunlightController(this, mHandler);
-        mSunlightController.onScreenStateChanged(mScreenOn, mIsDozing);
+        mDozeBrightnessController = new DozeBrightnessController(this, mHandler);
 
-        getContentResolver().registerContentObserver(Settings.System.getUriFor(DISPLAY_COLOR_MODE),
-                    false, mSettingObserver, UserHandle.USER_CURRENT);
-        IntentFilter screenStateFilter = new IntentFilter(Intent.ACTION_SCREEN_ON);
-        screenStateFilter.addAction(Intent.ACTION_SCREEN_OFF);
-        registerReceiver(mScreenStateReceiver, screenStateFilter);
+        if (mDisplayManager != null) {
+            mDisplayManager.registerDisplayListener(mDisplayListener, mHandler);
+            Display defaultDisplay = mDisplayManager.getDisplay(Display.DEFAULT_DISPLAY);
+            if (defaultDisplay != null) {
+                mScreenOn = (defaultDisplay.getState() == Display.STATE_ON);
+                mSunlightController.onScreenStateChanged(mScreenOn, mIsDozing);
+            }
+        }
+
+        getContentResolver().registerContentObserver(
+                Settings.System.getUriFor(DISPLAY_COLOR_MODE),
+                false, mSettingObserver, UserHandle.USER_CURRENT);
 
         // Ensure legacy display_color_adjustment is reset so it does not conflict with DisplayFeature PCC
         final String adj = Settings.System.getStringForUser(getContentResolver(),
@@ -146,14 +179,22 @@ public class ColorService extends Service {
     @Override
     public void onDestroy() {
         dlog("onDestroy");
+        mHandler.removeCallbacks(mRestoreColorModeRunnable);
+
         if (mTrueToneController != null) {
             mTrueToneController.onDestroy();
         }
         if (mSunlightController != null) {
             mSunlightController.onDestroy();
         }
+        if (mDozeBrightnessController != null) {
+            mDozeBrightnessController.onDestroy();
+        }
+
+        if (mDisplayManager != null) {
+            mDisplayManager.unregisterDisplayListener(mDisplayListener);
+        }
         getContentResolver().unregisterContentObserver(mSettingObserver);
-        unregisterReceiver(mScreenStateReceiver);
         super.onDestroy();
     }
 

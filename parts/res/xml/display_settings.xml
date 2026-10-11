@@ -33,4 +33,12 @@
         android:defaultValue="false"
         android:title="@string/sunlight_mode_title"
         android:summary="@string/sunlight_mode_summary" />
+
+    <ListPreference
+        android:key="doze_brightness_mode"
+        android:defaultValue="0"
+        android:entries="@array/doze_brightness_entries"
+        android:entryValues="@array/doze_brightness_values"
+        android:title="@string/doze_brightness_title"
+        android:summary="%s" />
 </PreferenceScreen>
