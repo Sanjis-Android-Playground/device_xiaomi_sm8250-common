@@ -234,6 +234,7 @@
         <activity
             android:name=".display.DisplaySettingsActivity"
             android:label="@string/display_settings_title"
+            android:enabled="false"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.android.settings.action.IA_SETTINGS" />

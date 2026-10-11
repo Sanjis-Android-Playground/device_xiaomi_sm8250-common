@@ -17,6 +17,8 @@
 
 package org.lineageos.settings.display;
 
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity;
@@ -25,10 +27,28 @@ public class DisplaySettingsActivity extends CollapsingToolbarBaseActivity {
 
     private static final String TAG_DCDIMMING = "dcdimming";
 
+    public static boolean isSupported(Context context) {
+        return DisplayUtils.isDcSupported()
+                || TrueToneController.isSupported(context)
+                || SunlightController.isSupported()
+                || DozeBrightnessController.isSupported();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportFragmentManager().beginTransaction().replace(com.android.settingslib.collapsingtoolbar.R.id.content_frame,
+
+        if (!isSupported(this)) {
+            getPackageManager().setComponentEnabledSetting(
+                    getComponentName(),
+                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                    PackageManager.DONT_KILL_APP);
+            finish();
+            return;
+        }
+
+        getSupportFragmentManager().beginTransaction().replace(
+                com.android.settingslib.collapsingtoolbar.R.id.content_frame,
                 new DisplaySettingsFragment(), TAG_DCDIMMING).commit();
     }
 }
