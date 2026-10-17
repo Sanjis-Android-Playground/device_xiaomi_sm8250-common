@@ -11,7 +11,8 @@
         "1075201",
         "1344000",
         "1516800",
-        "1612801"
+        "1612801",
+        "1804800"
       ],
       "DefaultIndex": 0,
       "ResetOnInit": true
@@ -41,7 +42,9 @@
         "1056000",
         "1478390",
         "1747201",
-        "1958401"
+        "1958401",
+        "710400",
+        "2419200"
       ],
       "DefaultIndex": 0,
       "ResetOnInit": true
@@ -72,7 +75,9 @@
         "1305601",
         "1747201",
         "1862401",
-        "2649600"
+        "2649600",
+        "844800",
+        "2841600"
       ],
       "DefaultIndex": 0,
       "ResetOnInit": true
@@ -96,11 +101,20 @@
       "Path": "/sys/class/kgsl/kgsl-3d0/max_pwrlevel",
       "Values": [
         "0",
-        "1"
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
       ],
       "Comments": [
-        "0 => 670000000",
-        "1 => 587000000"
+        "0 => 683000000",
+        "1 => 587000000",
+        "2 => 525000000",
+        "3 => 490000000",
+        "4 => 441600000",
+        "5 => 400000000",
+        "level 6 (305000000) is reachable in the DT but min_pwrlevel is capped at num_pwrlevels - 2, so max_pwrlevel can never exceed 5"
       ],
       "DefaultIndex": 0,
       "ResetOnInit": true
@@ -153,8 +167,10 @@
       "Path": "/sys/class/kgsl/kgsl-3d0/idle_timer",
       "Values": [
         "10000",
-        "58"
+        "58",
+        "10"
       ],
+      "DefaultIndex": 1,
       "ResetOnInit": true
     },
     {
