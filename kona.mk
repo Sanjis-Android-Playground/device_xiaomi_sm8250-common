@@ -7,6 +7,11 @@
 # Setup dalvik vm configs
 $(call inherit-product, frameworks/native/build/phone-xhdpi-6144-dalvik-heap.mk)
 
+# ART
+# AOT-compile unprofiled preinstalled code instead of leaving it to the JIT.
+# Profile-guided compilation is still preferred wherever a profile exists.
+PRODUCT_DEX_PREOPT_DEFAULT_COMPILER_FILTER := speed
+
 # Add common definitions for Qualcomm
 $(call inherit-product, hardware/qcom-caf/common/common.mk)
 
