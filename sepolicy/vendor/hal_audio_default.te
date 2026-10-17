@@ -9,6 +9,12 @@ binder_call(hal_audio_default, system_suspend_server)
 set_prop(hal_audio_default, vendor_audio_prop)
 
 allow hal_audio_default sysfs:file { read open };
+
+# f0_value is read by the audio HAL for haptic telemetry. The 2-005a directory
+# carries sysfs_haptic_aw8697 rather than the base sysfs type, so the generic
+# "allow domain sysfs:dir search" rule no longer covers traversal to it.
+allow hal_audio_default sysfs_haptic_aw8697:dir search;
+allow hal_audio_default sysfs_haptic_aw8697:file { read open };
 allow hal_audio_default vendor_audio_socket:sock_file rw_file_perms;
 allow hal_audio_default system_suspend_hwservice:hwservice_manager find;
 
