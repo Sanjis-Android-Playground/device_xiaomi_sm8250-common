@@ -1,0 +1,14 @@
+# Copyright (C) 2026 The LineageOS Project
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+# The AW8697 HAL drives the haptic actuator through the input FF interface and
+# the driver's own sysfs nodes instead of the QTI haptics ABI.
+allow hal_vibrator_default input_device:dir r_dir_perms;
+allow hal_vibrator_default input_device:chr_file rw_file_perms;
+
+# custom_wave carries the RTP ring metadata and accepts the waveform payload;
+# gain and f0_value are read and written next to it.
+allow hal_vibrator_default sysfs_haptic_aw8697:dir r_dir_perms;
+allow hal_vibrator_default sysfs_haptic_aw8697:file rw_file_perms;

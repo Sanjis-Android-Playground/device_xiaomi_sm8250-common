@@ -44,6 +44,7 @@
 
 # IR
 /vendor/bin/hw/android\.hardware\.ir-service\.xiaomi                                                u:object_r:hal_ir_default_exec:s0
+/vendor/bin/hw/android\.hardware\.vibrator-service\.xiaomi_aw8697                           u:object_r:hal_vibrator_default_exec:s0
 
 # IR devices
 /dev/ir_spi                                                                                         u:object_r:lirc_device:s0
