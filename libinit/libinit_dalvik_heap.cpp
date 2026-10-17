@@ -9,6 +9,7 @@
 #include "include/libinit_utils.h"
 
 #include <sys/sysinfo.h>
+#include <cstdint>
 #include <string>
 
 #define GB(b) (b * 1024ull * 1024 * 1024)
@@ -43,8 +44,8 @@ static const dalvik_heap_info dalvik_heap_info_8192 = {
     .heapgrowthlimit = "384m",
     .heapsize = "512m",
     .heapminfree = "8m",
-    .heapmaxfree = "16m",
-    .heaptargetutilization = "0.6",
+    .heapmaxfree = "64m",
+    .heaptargetutilization = "0.5",
 };
 
 static const dalvik_heap_info dalvik_heap_info_6144 = {
@@ -75,18 +76,23 @@ static const dalvik_heap_info dalvik_heap_info_2048 = {
 };
 
 void set_dalvik_heap() {
-    struct sysinfo sys;
+    struct sysinfo sys {};
     const dalvik_heap_info *dhi;
 
-    sysinfo(&sys);
+    // Leave the inherited product defaults in place if RAM detection fails.
+    if (sysinfo(&sys) != 0 || sys.mem_unit == 0 || sys.totalram == 0) {
+        return;
+    }
+    const uint64_t total_ram = static_cast<uint64_t>(sys.totalram) * sys.mem_unit;
 
-    if (sys.totalram > GB(11))
+    // Kernel and firmware reservations keep this below the marketed size.
+    if (total_ram > GB(11))
         dhi = &dalvik_heap_info_12288;
-    else if (sys.totalram > GB(7))
+    else if (total_ram > GB(7))
         dhi = &dalvik_heap_info_8192;
-    else if (sys.totalram > GB(5))
+    else if (total_ram > GB(5))
         dhi = &dalvik_heap_info_6144;
-    else if (sys.totalram > GB(3))
+    else if (total_ram > GB(3))
         dhi = &dalvik_heap_info_4096;
     else
         dhi = &dalvik_heap_info_2048;
@@ -97,4 +103,15 @@ void set_dalvik_heap() {
     property_override(kHeapMinFreeProp, dhi->heapminfree);
     property_override(kHeapMaxFreeProp, dhi->heapmaxfree);
     property_override(kHeapTargetUtilizationProp, dhi->heaptargetutilization);
+
+    // runtime_libart.mk pins these to the same value on every device, so the
+    // 6 GB profile inherits madvise and USAP tuning meant for much larger
+    // machines. Scale them with the RAM we actually detected.
+    if (total_ram > GB(5)) {
+        const bool is_8gb = total_ram > GB(7);
+        const std::string madvise_size = is_8gb ? "157286400" : "104857600";
+        property_override("dalvik.vm.madvise.vdexfile.size", madvise_size);
+        property_override("dalvik.vm.madvise.odexfile.size", madvise_size);
+        property_override("dalvik.vm.usap_pool_size_max", is_8gb ? "3" : "2");
+    }
 }
