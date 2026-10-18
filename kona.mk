@@ -280,6 +280,22 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     vendor.lineage.health-service.default
 
+# The kernel exposes battery_charging_enabled, but nothing chowns it, so the HAL
+# runs as system and gets EACCES. charging_enabled does not exist at all. Left to
+# autodetect, the HAL walks both, fails ten times on each, then falls back to
+# input_suspend, which init.xiaomi.rc already sets to system:system 0660:
+#
+#   Failed to access() .../battery_charging_enabled: Permission denied
+#   Failed to access() .../charging_enabled: No such file or directory
+#
+# Point it straight at input_suspend instead. The polarity is inverted compared
+# to the usual node: writing 1 suspends input (charging stops), 0 resumes it.
+$(call soong_config_set,lineage_health,charging_control_charging_path,/sys/class/power_supply/battery/input_suspend)
+$(call soong_config_set,lineage_health,charging_control_charging_enabled,0)
+$(call soong_config_set,lineage_health,charging_control_charging_disabled,1)
+
+# input_suspend has no bypass equivalent, so advertising BYPASS would let the
+# framework report a charge-limit mode that cannot actually be applied.
 $(call soong_config_set_bool,lineage_health,charging_control_supports_bypass,false)
 
 # Logging
