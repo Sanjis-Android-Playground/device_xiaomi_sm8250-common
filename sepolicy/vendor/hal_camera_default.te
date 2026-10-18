@@ -31,3 +31,7 @@ allow hal_camera_default proc_stat:file r_file_perms;
 
 # Camera HAL wants to search on /mnt/vendor
 allow hal_camera_default mnt_vendor_file:dir search;
+
+# Allow the camera HAL to report the flash state to the thermal framework
+allow hal_camera_default sysfs_thermal:dir search;
+allow hal_camera_default sys_thermal_flash_state:file rw_file_perms;

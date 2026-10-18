@@ -9,6 +9,9 @@ type sysfs_touchpanel, fs_type, sysfs_type;
 # Torch
 type sysfs_torch, fs_type, sysfs_type;
 
+# Thermal
+type sys_thermal_flash_state, fs_type, sysfs_type;
+
 type sysfs_ultrasound, fs_type, sysfs_type;
 
 type sysfs_haptic_aw8697, fs_type, sysfs_type;

@@ -14,3 +14,6 @@ allow init {
 }:file mounton;
 allow init tmpfs:blk_file { read open getattr };
 allow init adsprpcd_file:file { mounton };
+
+# Allow init to chown the flash_state node to cameraserver
+allow init sys_thermal_flash_state:file { open read setattr };
