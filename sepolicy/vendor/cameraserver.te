@@ -1,1 +1,6 @@
+# Torch strength control (CameraProviderExtension) writes the torch LED
+# brightness nodes. The nodes themselves are sysfs_torch, but their parent
+# ".../leds" directory is labelled sysfs_leds, so path traversal needs search.
+allow cameraserver sysfs_leds:dir search;
+
 allow cameraserver sysfs_torch:file rw_file_perms;
