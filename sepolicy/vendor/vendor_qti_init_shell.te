@@ -4,6 +4,18 @@ allow vendor_qti_init_shell ctl_stop_prop:property_service set;
 allow vendor_qti_init_shell proc_page_cluster:file { write open };
 allow vendor_qti_init_shell sysfs_wakeup:file setattr;
 
+# Runtime fs tuning in init.qcom.post_boot.sh writes the UFS queue knobs:
+#
+#   echo 128 > /sys/block/sda/queue/read_ahead_kb
+#   echo 128 > /sys/block/sda/queue/nr_requests
+#   echo 1   > /sys/block/sda/queue/iostats
+#
+# All three are labelled vendor_sysfs_scsi_host (iostats used to fall through to
+# generic sysfs; it is labelled alongside its siblings in file_contexts now).
+# Only write was denied (the open and getattr that precede it already pass via
+# the sysfs_type rules), so grant exactly that.
+allow vendor_qti_init_shell vendor_sysfs_scsi_host:file write;
+
 # allow init.mi.btmac.sh to read hex-encoded mac address and set it
 allow vendor_qti_init_shell vendor_bluetooth_prop:property_service set;
 allow vendor_qti_init_shell vendor_wifi_vendor_data_file:dir search;
