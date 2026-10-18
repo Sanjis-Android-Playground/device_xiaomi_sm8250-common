@@ -222,6 +222,7 @@ on boot
     # Create vpp directory
     mkdir /mnt/vendor/persist/vpp 0770 media media
     copy  /vendor/etc/tunings.txt /mnt/vendor/persist/vpp/tunings.txt
+    chmod 0644 /mnt/vendor/persist/vpp/tunings.txt
 
     # Create hvdcp_opti directory
     mkdir /mnt/vendor/persist/hvdcp_opti 0770 root system
