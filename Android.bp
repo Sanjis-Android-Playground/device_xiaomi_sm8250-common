@@ -35,10 +35,36 @@ install_symlink {
     symlink_target: "/vendor/etc/wifi/WCNSS_qcom_cfg.ini",
 }
 
+install_symlink {
+    name: "firmware_WCNSS_qcom_cfg_qca6390.ini_symlink",
+    vendor: true,
+    installed_location: "firmware/wlan/qca_cld/qca6390/WCNSS_qcom_cfg.ini",
+    symlink_target: "/vendor/etc/wifi/qca6390/WCNSS_qcom_cfg.ini",
+}
+
 xiaomi_kona_wifi_install_symlink {
     name: "firmware_wlan_mac.bin_symlink",
     vendor: true,
     installed_location: "firmware/wlan/qca_cld/wlan_mac.bin",
+    soong_config_variables: {
+        WIFI_SYMLINK_VERSION: {
+            v1: {
+                symlink_target: "/mnt/vendor/persist/wlan_mac.bin",
+            },
+            v2: {
+                symlink_target: "/mnt/vendor/persist/wlan/wlan_mac.bin",
+            },
+            conditions_default: {
+                symlink_target: "/mnt/vendor/persist/wlan_mac.bin",
+            }
+        },
+    },
+}
+
+xiaomi_kona_wifi_install_symlink {
+    name: "firmware_wlan_mac_qca6390.bin_symlink",
+    vendor: true,
+    installed_location: "firmware/wlan/qca_cld/qca6390/wlan_mac.bin",
     soong_config_variables: {
         WIFI_SYMLINK_VERSION: {
             v1: {
