@@ -20,6 +20,21 @@ from extract_utils.fixups_lib import (
 blob_fixups: blob_fixups_user_type = {
     'system_ext/lib64/libwfdnative.so': blob_fixup()
         .add_needed('libinput_shim.so'),
+    # SM8250 builds RMNET into the kernel (CONFIG_RMNET, CONFIG_RMNET_CTL), and this
+    # tree ships no loadable modules at all - vendor/lib/modules is empty. Every
+    # modprobe in the stock script therefore fails, twice per module (once for the
+    # default path, once for 5.4-gki):
+    #
+    #   modprobe -a -d /vendor/lib/modules rmnet_core
+    #   modprobe -a -d /vendor/lib/modules/5.4-gki rmnet_core
+    #
+    # Drop the modprobe calls and leave the driver loading to the kernel. netmgrd
+    # itself is unaffected; it only needs the socket directory and /data dirs, which
+    # are created by the same file.
+    'vendor/etc/init/netmgrd.rc': blob_fixup()
+        .regex_replace(r'    #Load rmnet_core driver\n(?:    exec [^\n]*modprobe[^\n]*\n)+',
+                       '    # RMNET drivers are built into the SM8250 kernel.\n')
+        .regex_replace(r'\non property:persist\.vendor\.data\.(?:shs|perf|offload)_ko_load=[0-3]\n(?:    exec [^\n]*modprobe[^\n]*\n)+', ''),
     'vendor/etc/init/init.mi_thermald.rc': blob_fixup()
         .regex_replace('.*seclabel u:r:mi_thermald:s0\n', ''),
     'vendor/etc/seccomp_policy/atfwd@2.0.policy': blob_fixup()
