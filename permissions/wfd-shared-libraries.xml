@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    WfdService.apk declares <uses-native-library name=".WfdService" required="true"/>,
+    but no such library is shipped. PackageManager resolves uses-native-library names
+    against <library> entries in */etc/permissions, so without a matching entry the
+    package fails its shared-library check on every boot and its service never runs.
+
+    The declaration below binds that name to the library the APK actually loads via
+    System.loadLibrary("wfdnative"), which the tree installs alongside the APK as
+    priv-app/WfdService/lib/arm64/libwfdnative.so.
+-->
+<permissions>
+    <library name=".WfdService"
+             file="/system_ext/lib64/libwfdnative.so" />
+</permissions>

@@ -511,5 +511,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     libwfdaac_vendor
 
+# WfdService requires a native shared library named ".WfdService" that the blob
+# set does not ship; bind it to libwfdnative so PackageManager can resolve it.
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/permissions/wfd-shared-libraries.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/permissions/wfd-shared-libraries.xml
+
 # Inherit the proprietary files
 $(call inherit-product, vendor/xiaomi/sm8250-common/sm8250-common-vendor.mk)
