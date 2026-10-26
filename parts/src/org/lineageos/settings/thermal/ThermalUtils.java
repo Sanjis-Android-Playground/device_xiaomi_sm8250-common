@@ -64,6 +64,9 @@ public final class ThermalUtils {
     private static final String THERMAL_MAP = "persist.sys.xiaomi.thermal.map";
     private static final String INDIA_MAP = "/vendor/etc/thermal-map-india.conf";
 
+    public static final int REGION_GLOBAL = 0;
+    public static final int REGION_INDIA = 1;
+
     private boolean mTouchModeChanged;
 
     private Display mDisplay;
@@ -97,19 +100,43 @@ public final class ThermalUtils {
     private static void ensureRegion() {
         String map = SystemProperties.get(THERMAL_MAP, "");
         if ("global".equals(map)
-                || ("india".equals(map) && FileUtils.fileExists(INDIA_MAP))) {
+                || ("india".equals(map) && isIndiaMapAvailable())) {
             return;
         }
 
         String hwVersion = SystemProperties.get("ro.boot.hwversion", "");
-        boolean india = FileUtils.fileExists(INDIA_MAP)
+        boolean india = isIndiaMapAvailable()
                 && (hwVersion.startsWith("9.21")
                         || hwVersion.startsWith("9.22")
                         || hwVersion.startsWith("9.29"));
+        setSelectedRegion(india ? REGION_INDIA : REGION_GLOBAL);
+    }
+
+    public static boolean isIndiaMapAvailable() {
+        return FileUtils.fileExists(INDIA_MAP);
+    }
+
+    public static int getSelectedRegion() {
+        if ("india".equals(SystemProperties.get(THERMAL_MAP, "")) && isIndiaMapAvailable()) {
+            return REGION_INDIA;
+        }
+        return REGION_GLOBAL;
+    }
+
+    public static boolean setSelectedRegion(int region) {
+        if (region != REGION_GLOBAL && region != REGION_INDIA) {
+            return false;
+        }
+        if (region == REGION_INDIA && !isIndiaMapAvailable()) {
+            return false;
+        }
+
         try {
-            SystemProperties.set(THERMAL_MAP, india ? "india" : "global");
+            SystemProperties.set(THERMAL_MAP, region == REGION_INDIA ? "india" : "global");
+            return true;
         } catch (RuntimeException e) {
-            Log.w("ThermalUtils", "Cannot initialize thermal map", e);
+            Log.w("ThermalUtils", "Cannot change thermal map", e);
+            return false;
         }
     }
 

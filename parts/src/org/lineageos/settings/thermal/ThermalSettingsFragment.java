@@ -30,6 +30,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -63,6 +64,7 @@ public class ThermalSettingsFragment extends SettingsBasePreferenceFragment
             new HashMap<String, ApplicationsState.AppEntry>();
 
     private RecyclerView mAppsRecyclerView;
+    private Spinner mRegionSpinner;
 
     private ThermalUtils mThermalUtils;
 
@@ -97,6 +99,26 @@ public class ThermalSettingsFragment extends SettingsBasePreferenceFragment
         mAppsRecyclerView = view.findViewById(R.id.thermal_rv_view);
         mAppsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAppsRecyclerView.setAdapter(mAllPackagesAdapter);
+
+        mRegionSpinner = view.findViewById(R.id.thermal_region);
+        ArrayAdapter<CharSequence> regionAdapter = ArrayAdapter.createFromResource(
+                getActivity(), R.array.thermal_region_entries,
+                android.R.layout.simple_spinner_item);
+        regionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mRegionSpinner.setAdapter(regionAdapter);
+        mRegionSpinner.setSelection(ThermalUtils.getSelectedRegion(), false);
+        mRegionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (!ThermalUtils.setSelectedRegion(position)) {
+                    mRegionSpinner.setSelection(ThermalUtils.getSelectedRegion(), false);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
 
 

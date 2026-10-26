@@ -32,6 +32,10 @@
     <!-- Thermal Profiles -->
     <string name="thermal_title">Thermal Profiles</string>
     <string name="thermal_summary">Adjust per-app thermal profiles for optimum performance</string>
+    <string name="thermal_region_title">Thermal region</string>
+    <string name="thermal_region_summary">Select the regional thermal map used by mi_thermald</string>
+    <string name="thermal_region_global">Global</string>
+    <string name="thermal_region_india">India</string>
     <string name="thermal_default">Default</string>
     <string name="thermal_benchmark">Benchmark</string>
     <string name="thermal_browser">Browser</string>
