@@ -36,3 +36,7 @@ get_prop(devicesettings_app, settingslib_prop)
 
 # XiaomiParts owns this system property; init applies the map.
 set_prop(devicesettings_app, xiaomi_thermal_profile_prop)
+
+# init.target.rc is a vendor rc file, so the property triggers are checked
+# against vendor_init before they are accepted.
+get_prop(vendor_init, xiaomi_thermal_profile_prop)
