@@ -20,7 +20,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.RemoteException;
+import android.os.SystemProperties;
 import android.os.UserHandle;
+import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
 import android.view.WindowManager;
@@ -59,6 +61,8 @@ public final class ThermalUtils {
     private static final String THERMAL_STREAMING = "thermal.streaming=";
 
     private static final String THERMAL_SCONFIG = "/sys/class/thermal/thermal_message/sconfig";
+    private static final String THERMAL_MAP = "persist.sys.xiaomi.thermal.map";
+    private static final String INDIA_MAP = "/vendor/etc/thermal-map-india.conf";
 
     private boolean mTouchModeChanged;
 
@@ -83,9 +87,29 @@ public final class ThermalUtils {
     }
 
     public static void startService(Context context) {
+        ensureRegion();
         if (FileUtils.fileExists(THERMAL_SCONFIG)) {
             context.startServiceAsUser(new Intent(context, ThermalService.class),
                     UserHandle.CURRENT);
+        }
+    }
+
+    private static void ensureRegion() {
+        String map = SystemProperties.get(THERMAL_MAP, "");
+        if ("global".equals(map)
+                || ("india".equals(map) && FileUtils.fileExists(INDIA_MAP))) {
+            return;
+        }
+
+        String hwVersion = SystemProperties.get("ro.boot.hwversion", "");
+        boolean india = FileUtils.fileExists(INDIA_MAP)
+                && (hwVersion.startsWith("9.21")
+                        || hwVersion.startsWith("9.22")
+                        || hwVersion.startsWith("9.29"));
+        try {
+            SystemProperties.set(THERMAL_MAP, india ? "india" : "global");
+        } catch (RuntimeException e) {
+            Log.w("ThermalUtils", "Cannot initialize thermal map", e);
         }
     }
 
