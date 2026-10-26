@@ -46,7 +46,8 @@ public final class ThermalUtils {
     protected static final int STATE_STREAMING = 6;
     private static final String THERMAL_CONTROL = "thermal_control";
     private static final String THERMAL_COOL_MODE = "thermal_cool_mode";
-    private static final String THERMAL_STATE_DEFAULT = "0";
+    // thermal-mgame.conf: all clusters stay at or below ~1.86 GHz until 48 C.
+    private static final String THERMAL_STATE_DEFAULT = "20";
     private static final String THERMAL_STATE_COOL = "52";
     private static final String THERMAL_STATE_BENCHMARK = "10";
     private static final String THERMAL_STATE_BROWSER = "11";
