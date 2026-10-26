@@ -46,8 +46,19 @@ public final class ThermalUtils {
     protected static final int STATE_STREAMING = 6;
     private static final String THERMAL_CONTROL = "thermal_control";
     private static final String THERMAL_COOL_MODE = "thermal_cool_mode";
-    // thermal-mgame.conf: all clusters stay at or below ~1.86 GHz until 48 C.
-    private static final String THERMAL_STATE_DEFAULT = "20";
+    private static final String THERMAL_QS_MODE = "thermal_qs_mode";
+
+    // Modes cycled by the Quick Settings tile. The last entry is the fallback
+    // profile for apps without a per-app selection.
+    private static final String[] THERMAL_QS_STATES = {
+            "20", // thermal-mgame.conf
+            "0",  // thermal-normal.conf
+            "13", // thermal-tgame.conf
+    };
+
+    public static final int QS_MODE_BATTERY = 0;
+    public static final int QS_MODE_DEFAULT = 1;
+    public static final int QS_MODE_PERFORMANCE = 2;
     private static final String THERMAL_STATE_COOL = "52";
     private static final String THERMAL_STATE_BENCHMARK = "10";
     private static final String THERMAL_STATE_BROWSER = "11";
@@ -217,6 +228,29 @@ public final class ThermalUtils {
         return state;
     }
 
+    protected int getQsMode() {
+        int mode = mSharedPrefs.getInt(THERMAL_QS_MODE, QS_MODE_BATTERY);
+        return (mode >= QS_MODE_BATTERY && mode <= QS_MODE_PERFORMANCE)
+                ? mode : QS_MODE_BATTERY;
+    }
+
+    protected String getQsState() {
+        return THERMAL_QS_STATES[getQsMode()];
+    }
+
+    protected void setQsMode(int mode) {
+        if (mode < QS_MODE_BATTERY || mode > QS_MODE_PERFORMANCE) {
+            return;
+        }
+
+        // Picking a tile mode is an explicit choice, so leave Cool mode.
+        mSharedPrefs.edit()
+                .putInt(THERMAL_QS_MODE, mode)
+                .putBoolean(THERMAL_COOL_MODE, false)
+                .apply();
+        FileUtils.writeLine(THERMAL_SCONFIG, THERMAL_QS_STATES[mode]);
+    }
+
     protected boolean isCoolModeEnabled() {
         return mSharedPrefs.getBoolean(THERMAL_COOL_MODE, false);
     }
@@ -230,7 +264,7 @@ public final class ThermalUtils {
                 resetTouchModes();
             }
         } else {
-            FileUtils.writeLine(THERMAL_SCONFIG, THERMAL_STATE_DEFAULT);
+            FileUtils.writeLine(THERMAL_SCONFIG, getQsState());
         }
     }
 
@@ -239,7 +273,7 @@ public final class ThermalUtils {
             FileUtils.writeLine(THERMAL_SCONFIG, THERMAL_STATE_COOL);
             return;
         }
-        FileUtils.writeLine(THERMAL_SCONFIG, THERMAL_STATE_DEFAULT);
+        FileUtils.writeLine(THERMAL_SCONFIG, getQsState());
     }
 
     protected void setThermalProfile(String packageName) {
@@ -253,7 +287,7 @@ public final class ThermalUtils {
 
         String value = getValue();
         String modes[];
-        String state = THERMAL_STATE_DEFAULT;
+        String state = getQsState();
 
         if (value != null) {
             modes = value.split(":");

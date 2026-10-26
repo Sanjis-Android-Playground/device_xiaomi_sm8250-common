@@ -13,50 +13,67 @@
 *
 * You should have received a copy of the GNU General Public License
 * along with this program. If not, see <http://www.gnu.org/licenses/>.
-*
 */
 
 package org.lineageos.settings.thermal;
 
-import android.annotation.TargetApi;
-import android.app.PendingIntent;
-import android.content.Intent;
+import android.graphics.drawable.Icon;
+import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
 
-@TargetApi(24)
+import org.lineageos.settings.R;
+
 public class ThermalTileService extends TileService {
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
+
+    private ThermalUtils mThermalUtils;
 
     @Override
-    public void onTileAdded() {
-        super.onTileAdded();
-    }
-
-    @Override
-    public void onTileRemoved() {
-        super.onTileRemoved();
+    public void onCreate() {
+        super.onCreate();
+        mThermalUtils = new ThermalUtils(this);
     }
 
     @Override
     public void onStartListening() {
         super.onStartListening();
-    }
-
-    @Override
-    public void onStopListening() {
-        super.onStopListening();
+        updateTile();
     }
 
     @Override
     public void onClick() {
         super.onClick();
-        Intent ThermalProfiles = new Intent(this, ThermalActivity.class);
-        ThermalProfiles.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, ThermalProfiles,
-                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-        startActivityAndCollapse(pendingIntent);
+        int nextMode = (mThermalUtils.getQsMode() + 1) % 3;
+        mThermalUtils.setQsMode(nextMode);
+        updateTile();
+    }
+
+    private void updateTile() {
+        Tile tile = getQsTile();
+        if (tile == null) {
+            return;
+        }
+
+        tile.setState(Tile.STATE_ACTIVE);
+
+        switch (mThermalUtils.getQsMode()) {
+            case ThermalUtils.QS_MODE_DEFAULT:
+                tile.setIcon(Icon.createWithResource(this, R.drawable.ic_qs_thermal_default));
+                tile.setLabel(getString(R.string.thermal_qs_default));
+                tile.setSubtitle(getString(R.string.thermal_qs_default));
+                break;
+            case ThermalUtils.QS_MODE_PERFORMANCE:
+                tile.setIcon(Icon.createWithResource(this, R.drawable.ic_qs_thermal_performance));
+                tile.setLabel(getString(R.string.thermal_qs_performance));
+                tile.setSubtitle(getString(R.string.thermal_qs_performance));
+                break;
+            case ThermalUtils.QS_MODE_BATTERY:
+            default:
+                tile.setIcon(Icon.createWithResource(this, R.drawable.ic_qs_thermal_battery));
+                tile.setLabel(getString(R.string.thermal_qs_battery));
+                tile.setSubtitle(getString(R.string.thermal_qs_battery));
+                break;
+        }
+
+        tile.updateTile();
     }
 }
