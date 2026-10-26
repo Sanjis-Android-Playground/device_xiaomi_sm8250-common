@@ -42,6 +42,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp" />
+
+        <Switch
+            android:id="@+id/thermal_cool_mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/thermal_cool_mode_title" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/thermal_cool_mode_summary"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

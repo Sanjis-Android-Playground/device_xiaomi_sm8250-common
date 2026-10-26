@@ -36,6 +36,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SectionIndexer;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -65,6 +66,7 @@ public class ThermalSettingsFragment extends SettingsBasePreferenceFragment
 
     private RecyclerView mAppsRecyclerView;
     private Spinner mRegionSpinner;
+    private Switch mCoolModeSwitch;
 
     private ThermalUtils mThermalUtils;
 
@@ -119,6 +121,11 @@ public class ThermalSettingsFragment extends SettingsBasePreferenceFragment
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
+        mCoolModeSwitch = view.findViewById(R.id.thermal_cool_mode);
+        mCoolModeSwitch.setChecked(mThermalUtils.isCoolModeEnabled());
+        mCoolModeSwitch.setOnCheckedChangeListener((buttonView, isChecked) ->
+                mThermalUtils.setCoolModeEnabled(isChecked));
     }
 
 

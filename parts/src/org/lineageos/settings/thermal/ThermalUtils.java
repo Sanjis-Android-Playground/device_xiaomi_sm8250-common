@@ -45,7 +45,9 @@ public final class ThermalUtils {
     protected static final int STATE_GAMING = 5;
     protected static final int STATE_STREAMING = 6;
     private static final String THERMAL_CONTROL = "thermal_control";
+    private static final String THERMAL_COOL_MODE = "thermal_cool_mode";
     private static final String THERMAL_STATE_DEFAULT = "0";
+    private static final String THERMAL_STATE_COOL = "52";
     private static final String THERMAL_STATE_BENCHMARK = "10";
     private static final String THERMAL_STATE_BROWSER = "11";
     private static final String THERMAL_STATE_CAMERA = "12";
@@ -214,11 +216,40 @@ public final class ThermalUtils {
         return state;
     }
 
+    protected boolean isCoolModeEnabled() {
+        return mSharedPrefs.getBoolean(THERMAL_COOL_MODE, false);
+    }
+
+    protected void setCoolModeEnabled(boolean enabled) {
+        mSharedPrefs.edit().putBoolean(THERMAL_COOL_MODE, enabled).apply();
+
+        if (enabled) {
+            FileUtils.writeLine(THERMAL_SCONFIG, THERMAL_STATE_COOL);
+            if (mTouchModeChanged) {
+                resetTouchModes();
+            }
+        } else {
+            FileUtils.writeLine(THERMAL_SCONFIG, THERMAL_STATE_DEFAULT);
+        }
+    }
+
     protected void setDefaultThermalProfile() {
+        if (isCoolModeEnabled()) {
+            FileUtils.writeLine(THERMAL_SCONFIG, THERMAL_STATE_COOL);
+            return;
+        }
         FileUtils.writeLine(THERMAL_SCONFIG, THERMAL_STATE_DEFAULT);
     }
 
     protected void setThermalProfile(String packageName) {
+        if (isCoolModeEnabled()) {
+            FileUtils.writeLine(THERMAL_SCONFIG, THERMAL_STATE_COOL);
+            if (mTouchModeChanged) {
+                resetTouchModes();
+            }
+            return;
+        }
+
         String value = getValue();
         String modes[];
         String state = THERMAL_STATE_DEFAULT;
