@@ -62,4 +62,6 @@ persist.sys.thermal.config                                                      
 sys.thermal.                                                                                        u:object_r:vendor_thermal_normal_prop:s0
 vendor.sys.thermal.                                                                                 u:object_r:vendor_thermal_normal_prop:s0
 
+ctl.restart$mi_thermald u:object_r:vendor_ctl_thermal_map_prop:s0 exact string
+
 power.saving.mode                                                                                   u:object_r:vendor_default_prop:s0
