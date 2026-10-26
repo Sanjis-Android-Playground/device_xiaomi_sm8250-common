@@ -87,6 +87,60 @@ function enable_swap() {
     fi
 }
 
+function configure_zram_parameters() {
+    # Never change the compressor or reformat an initialized ZRAM device.
+    [ -r /sys/block/zram0/disksize ] || return 0
+    disksize=$(cat /sys/block/zram0/disksize) || return 1
+    case "$disksize" in
+        ''|*[!0-9]*) return 1 ;;
+    esac
+    [ "$disksize" -eq 0 ] || return 0
+
+    # Parse the value, not a fixed-width slice of /proc/meminfo.
+    MemTotal=
+    while read -r key value unit; do
+        if [ "$key" = "MemTotal:" ]; then
+            MemTotal=$value
+            break
+        fi
+    done < /proc/meminfo
+    case "$MemTotal" in
+        ''|*[!0-9]*) return 1 ;;
+    esac
+    [ "$MemTotal" -gt 0 ] || return 1
+
+    # Preserve the existing capacity policy: 75% at <=2 GiB, otherwise
+    # half the rounded RAM tier, capped at 4 GiB (3/4 GiB on 6/8 GiB phones).
+    RamSizeGB=$((MemTotal / 1048576 + 1))
+    if [ "$RamSizeGB" -le 2 ]; then
+        zRamSizeMB=$((RamSizeGB * 1024 * 3 / 4))
+    else
+        zRamSizeMB=$((RamSizeGB * 1024 / 2))
+    fi
+    [ "$zRamSizeMB" -le 4096 ] || zRamSizeMB=4096
+
+    echo lz4 > /sys/block/zram0/comp_algorithm || return 1
+    if [ -f /sys/block/zram0/use_dedup ]; then
+        echo 1 > /sys/block/zram0/use_dedup
+    fi
+    if [ "$MemTotal" -le 524288 ]; then
+        echo 402653184 > /sys/block/zram0/disksize || return 1
+    elif [ "$MemTotal" -le 1048576 ]; then
+        echo 805306368 > /sys/block/zram0/disksize || return 1
+    else
+        echo "${zRamSizeMB}M" > /sys/block/zram0/disksize || return 1
+    fi
+
+    # Retain the existing debug-SLAB mitigation on kernels that expose it.
+    for slab in zs_handle zspage; do
+        if [ -e /sys/kernel/slab/$slab/store_user ]; then
+            echo 0 > /sys/kernel/slab/$slab/store_user
+        fi
+    done
+    mkswap /dev/block/zram0 || return 1
+    swapon /dev/block/zram0 -p 32758
+}
+
 function configure_memory_parameters() {
     # Set Memory parameters.
     #
@@ -115,7 +169,7 @@ function configure_memory_parameters() {
         configure_read_ahead_kb_values
       	echo 100 > /proc/sys/vm/swappiness
 
-        #add memory limit to camera cgroup
+        #add memory limit to camera cgroup (cgroup v1 only)
         MemTotalStr=`cat /proc/meminfo | grep MemTotal`
         MemTotal=${MemTotalStr:16:8}
         if [ $MemTotal -gt 8388608 ]; then
@@ -124,7 +178,9 @@ function configure_memory_parameters() {
             let LimitSize=524288000
         fi
 
-        echo $LimitSize > /dev/memcg/camera/memory.soft_limit_in_bytes
+        if [ -f /dev/memcg/camera/memory.soft_limit_in_bytes ]; then
+            echo $LimitSize > /dev/memcg/camera/memory.soft_limit_in_bytes
+        fi
     else
 
         # Read adj series and set adj threshold for PPR and ALMK.
