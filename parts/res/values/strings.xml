@@ -36,6 +36,7 @@
     <string name="thermal_region_summary">Select the regional thermal map used by mi_thermald</string>
     <string name="thermal_region_global">Global</string>
     <string name="thermal_region_india">India</string>
+    <string name="thermal_apps_title">Per-app profiles</string>
     <string name="thermal_cool_mode_title">Cool mode</string>
     <string name="thermal_cool_mode_summary">Throttle CPU, GPU and backlight earlier to keep the device cooler. Expect lower sustained performance.</string>
     <string name="thermal_qs_battery">Battery</string>
