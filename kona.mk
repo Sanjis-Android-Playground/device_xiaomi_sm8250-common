@@ -477,13 +477,10 @@ PRODUCT_PACKAGES += \
 # Vibrator
 ifneq ($(TARGET_IS_TABLET),true)
 ifeq ($(TARGET_USES_AW8697_VIBRATOR),true)
-# Alioth drives the AW8697 directly over its input FF interface. The framework
-# must not open the same device, or the two clients fight over the effect slot.
+# AW8697 RichTap (AAC) HAL. It talks to /dev/awinic_haptic and does not use
+# the input-FF interface, so no excluded-input-devices list is needed.
 PRODUCT_PACKAGES += \
-    android.hardware.vibrator-service.xiaomi_aw8697
-
-PRODUCT_COPY_FILES += \
-    vendor/qcom/opensource/vibrator/excluded-input-devices.xml:$(TARGET_COPY_OUT_VENDOR)/etc/excluded-input-devices.xml
+    android.hardware.vibrator.service.oplus-richtap
 else
 $(call inherit-product, vendor/qcom/opensource/vibrator/vibrator-vendor-product.mk)
 endif
