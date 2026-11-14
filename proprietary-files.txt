@@ -317,10 +317,6 @@ vendor/firmware/a650_zap.b02
 vendor/firmware/a650_zap.elf
 vendor/firmware/a650_zap.mdt
 
-# Graphics (Vulkan)
-vendor/lib/hw/vulkan.adreno.so
-vendor/lib64/hw/vulkan.adreno.so
-
 # GNSS
 vendor/app/CACertService/CACertService.apk
 vendor/bin/loc_launcher
