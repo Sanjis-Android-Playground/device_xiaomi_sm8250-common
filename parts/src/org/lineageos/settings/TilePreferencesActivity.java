@@ -23,10 +23,8 @@ import android.os.Bundle;
 
 import org.lineageos.settings.dirac.DiracActivity;
 import org.lineageos.settings.dirac.DiracTileService;
-import org.lineageos.settings.display.DcDimmingSettingsActivity;
 import org.lineageos.settings.display.DcDimmingTileService;
-import org.lineageos.settings.hbm.HBMActivity;
-import org.lineageos.settings.hbm.HBMModeTileService;
+import org.lineageos.settings.display.DisplaySettingsActivity;
 import org.lineageos.settings.refreshrate.RefreshActivity;
 import org.lineageos.settings.thermal.ThermalActivity;
 import org.lineageos.settings.thermal.ThermalTileService;
@@ -53,10 +51,8 @@ public class TilePreferencesActivity extends Activity {
 
         if (ThermalTileService.class.getName().equals(className)) {
             target = ThermalActivity.class;
-        } else if (HBMModeTileService.class.getName().equals(className)) {
-            target = HBMActivity.class;
         } else if (DcDimmingTileService.class.getName().equals(className)) {
-            target = DcDimmingSettingsActivity.class;
+            target = DisplaySettingsActivity.class;
         } else if (RefreshRateTileService.class.getName().equals(className)) {
             target = RefreshActivity.class;
         } else if (DiracTileService.class.getName().equals(className)) {

@@ -36,7 +36,6 @@ import org.lineageos.settings.display.DisplaySettingsActivity;
 import org.lineageos.settings.display.DisplayUtils;
 import org.lineageos.settings.refreshrate.RefreshUtils;
 import org.lineageos.settings.touchsampling.TouchSamplingUtils;
-import org.lineageos.settings.utils.FileUtils;
 
 public class BootCompletedReceiver extends BroadcastReceiver {
 
@@ -58,7 +57,6 @@ public class BootCompletedReceiver extends BroadcastReceiver {
         ColorService.startService(context);
         RefreshUtils.startService(context);
         TouchSamplingUtils.restoreSamplingValue(context);
-        FileUtils.enableService(context);
 
         // Advanced Display Settings activity component enablement
         boolean hasAnyDisplayFeature = DisplaySettingsActivity.isSupported(context);
@@ -72,8 +70,6 @@ public class BootCompletedReceiver extends BroadcastReceiver {
                 PackageManager.DONT_KILL_APP);
 
         // DC Dimming
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-
         boolean dcDimmingEnabled = sharedPrefs.getBoolean(DC_DIMMING_ENABLE_KEY, false);
         if (DisplayUtils.isDcSupported()) {
             DisplayUtils.restoreDcDimming(dcDimmingEnabled);
