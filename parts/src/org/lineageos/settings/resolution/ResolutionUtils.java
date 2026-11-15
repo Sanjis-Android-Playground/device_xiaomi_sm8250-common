@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.RemoteException;
+import android.os.SystemProperties;
 import android.os.UserHandle;
 import android.hardware.display.DisplayManager;
 import android.view.Display;
@@ -94,12 +95,10 @@ public final class ResolutionUtils {
         mStockWidth = mode.getPhysicalWidth();
         mStockHeight = mode.getPhysicalHeight();
 
-        try {
-            IWindowManager wm = WindowManagerGlobal.getWindowManagerService();
-            mInitialDensity = wm.getInitialDisplayDensity(Display.DEFAULT_DISPLAY);
-        } catch (RemoteException e) {
-            mInitialDensity = 440; // sane fallback; overwritten on success path
-        }
+        // getInitialDisplayDensity() reports the density the display booted with,
+        // which may already be a value forced by a previous session. Always derive
+        // the baseline from the stock build density instead.
+        mInitialDensity = SystemProperties.getInt("ro.sf.lcd_density", 440);
     }
 
     private void calculateResolutionConfigs() {
@@ -236,25 +235,29 @@ public final class ResolutionUtils {
 
         try {
             IWindowManager wm = WindowManagerGlobal.getWindowManagerService();
+            final int displayId = Display.DEFAULT_DISPLAY;
+
             if (newState != STATE_DEFAULT) {
                 // Entering a custom resolution state
                 if (mCurrentState == STATE_DEFAULT) {
                     // Save the user's current density before changing it
                     // NOTE: getBaseDisplayDensity returns the density stored in persistent settings
-                    mSavedUserDensity = wm.getBaseDisplayDensity(Display.DEFAULT_DISPLAY);
+                    mSavedUserDensity = wm.getBaseDisplayDensity(displayId);
                 }
-                wm.setForcedDisplaySize(Display.DEFAULT_DISPLAY, cfg.width, cfg.height);
-                wm.setForcedDisplayDensityForUser(Display.DEFAULT_DISPLAY, cfg.density, UserHandle.USER_CURRENT);
+                // Apply the density first so the size change is the last transition
+                // and no redundant density write is issued.
+                wm.setForcedDisplayDensityForUser(displayId, cfg.density, UserHandle.USER_CURRENT);
+                wm.setForcedDisplaySize(displayId, cfg.width, cfg.height);
             } else {
                 // Returning to the default state
-                wm.clearForcedDisplaySize(Display.DEFAULT_DISPLAY);
+                wm.clearForcedDisplaySize(displayId);
                 if (mSavedUserDensity != -1) {
                     // Restore the saved user density
-                    wm.setForcedDisplayDensityForUser(Display.DEFAULT_DISPLAY, mSavedUserDensity, UserHandle.USER_CURRENT);
+                    wm.setForcedDisplayDensityForUser(displayId, mSavedUserDensity, UserHandle.USER_CURRENT);
                     mSavedUserDensity = -1; // Clear the saved value
                 } else {
                     // Fallback if no density was saved
-                    wm.clearForcedDisplayDensityForUser(Display.DEFAULT_DISPLAY, UserHandle.USER_CURRENT);
+                    wm.clearForcedDisplayDensityForUser(displayId, UserHandle.USER_CURRENT);
                 }
             }
             mCurrentState = newState;
