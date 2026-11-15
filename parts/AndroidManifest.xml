@@ -276,5 +276,26 @@
             </intent-filter>
         </service>
 
+        <activity
+            android:name=".corecontrol.CoreControlActivity"
+            android:label="@string/core_control_title"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.android.settings.action.IA_SETTINGS" />
+            </intent-filter>
+            <meta-data
+                android:name="com.android.settings.category"
+                android:value="com.android.settings.category.ia.system" />
+            <meta-data
+                android:name="com.android.settings.group_key"
+                android:value="category_other" />
+            <meta-data
+                android:name="com.android.settings.order"
+                android:value="102" />
+            <meta-data
+                android:name="com.android.settings.summary"
+                android:resource="@string/core_control_summary" />
+        </activity>
+
     </application>
 </manifest>
