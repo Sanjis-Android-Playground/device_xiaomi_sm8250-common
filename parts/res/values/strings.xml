@@ -183,6 +183,7 @@
     <string name="vpp_select_apps_summary_none">No apps selected</string>
     <string name="vpp_select_apps_summary_count">%d apps selected</string>
     <string name="vpp_select_apps_dialog_title">Select Video Apps</string>
+
     <!-- Core Control -->
     <string name="core_control_title">Core Control</string>
     <string name="core_control_summary">Manually enable or disable individual CPU cores</string>
@@ -195,7 +196,6 @@
     <string name="core_5">Core 5</string>
     <string name="core_6">Core 6 (Big)</string>
     <string name="core_7">Core 7 (Big)</string>
-
 
     <!-- GPU Manager -->
     <string name="gpu_manager_title">GPU Manager</string>
@@ -226,5 +226,19 @@
     <string name="settings_applied">Settings applied successfully</string>
     <string name="settings_reset">Settings reset to default</string>
 
-
+    <!-- Resolution scaling -->
+    <string name="upscale_title">Per-app Upscaling</string>
+    <string name="upscale_summary">Set upscaling for specific applications</string>
+    <string name="upscale_default">Native</string>
+    <string name="upscale_480p">Performance</string>
+    <string name="upscale_540p">Balanced</string>
+    <string name="upscale_720p">Quality</string>
+    <string name="system_resolution_title">System resolution</string>
+    <string name="system_resolution_summary">Baseline applied system-wide: %1$s</string>
+    <string name="system_resolution_summary_setting">Baseline applied system-wide</string>
+    <string name="system_resolution_note">Per-app rules upscaling override the baseline while those apps are in the foreground</string>
+    <string name="resolution_default">Default</string>
+    <string name="resolution_480p">480p</string>
+    <string name="resolution_540p">540p</string>
+    <string name="resolution_720p">720p</string>
 </resources>

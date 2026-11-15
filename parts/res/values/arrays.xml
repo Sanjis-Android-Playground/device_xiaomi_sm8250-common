@@ -134,4 +134,12 @@
         <item>1</item>
         <item>2</item>
     </string-array>
+
+    <!-- Resolution scaling -->
+    <string-array name="system_resolution_entries">
+        <item>@string/resolution_default</item>
+        <item>@string/resolution_480p</item>
+        <item>@string/resolution_540p</item>
+        <item>@string/resolution_720p</item>
+    </string-array>
 </resources>
