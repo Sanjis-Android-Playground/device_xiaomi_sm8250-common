@@ -43,7 +43,3 @@ get_prop(vendor_init, xiaomi_thermal_profile_prop)
 
 # Allow XiaomiParts to set VPP properties
 set_prop(devicesettings_app, vpp_prop)
-
-# CPU core control
-allow devicesettings_app sysfs_devices_system_cpu:dir search;
-allow devicesettings_app sysfs_devices_system_cpu:file rw_file_perms;
