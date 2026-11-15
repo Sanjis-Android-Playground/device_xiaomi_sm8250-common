@@ -71,6 +71,10 @@ on boot
     chown system system /sys/class/kgsl/kgsl-3d0/force_clk_on
     chmod 0660 /sys/class/kgsl/kgsl-3d0/force_clk_on
 
+    # Thermal profile (XiaomiParts)
+    chown system system /sys/class/thermal/thermal_message/sconfig
+    chmod 0660 /sys/class/thermal/thermal_message/sconfig
+
 # NFC
 service qti_esepowermanager_service_1_1 /vendor/bin/hw/vendor.qti.esepowermanager@1.1-service
     override
