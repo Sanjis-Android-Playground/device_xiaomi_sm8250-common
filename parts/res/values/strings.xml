@@ -197,4 +197,34 @@
     <string name="core_7">Core 7 (Big)</string>
 
 
+    <!-- GPU Manager -->
+    <string name="gpu_manager_title">GPU Manager</string>
+    <string name="gpu_manager_summary">Manage GPU frequencies and power settings</string>
+    <string name="gpu_governor_title">GPU Governor</string>
+    <string name="gpu_governor_summary">Current: %s</string>
+    <string name="gpu_freq_title">GPU Frequencies</string>
+    <string name="gpu_min_freq_title">Minimum Frequency</string>
+    <string name="gpu_max_freq_title">Maximum Frequency</string>
+    <string name="gpu_current_freq_title">Current Frequency</string>
+    <string name="gpu_power_title">Power Settings</string>
+    <string name="gpu_force_clk_on_title">Force Clock On</string>
+    <string name="gpu_force_clk_on_summary">Keep GPU clock always on</string>
+    <string name="gpu_thermal_title">Thermal Settings</string>
+    <string name="gpu_thermal_pwrlevel_title">Thermal Power Level</string>
+    <string name="gpu_thermal_pwrlevel_summary">Current thermal power level</string>
+    <string name="gpu_temp_title">GPU Temperature</string>
+    <string name="gpu_info_title">GPU Information</string>
+    <string name="gpu_model_title">GPU Model</string>
+    <string name="gpu_busy_percentage_title">GPU Load</string>
+    <string name="gpu_info_category">GPU Information</string>
+    <string name="gpu_settings_category">GPU Settings</string>
+    <string name="gpu_advanced_category">Advanced Settings</string>
+    <string name="gpu_info_summary">Manage GPU frequency scaling and power settings. Changes may affect performance and battery life.</string>
+    <string name="kernel_info_category">Information</string>
+    <string name="apply_settings">Apply Settings</string>
+    <string name="reset_settings">Reset to Default</string>
+    <string name="settings_applied">Settings applied successfully</string>
+    <string name="settings_reset">Settings reset to default</string>
+
+
 </resources>

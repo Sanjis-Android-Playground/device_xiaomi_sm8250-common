@@ -28,3 +28,7 @@ allow devicesettings_app {
 }:hwservice_manager find;
 
 get_prop(devicesettings_app, vendor_displayfeature_prop)
+
+# GPU manager
+allow devicesettings_app vendor_sysfs_kgsl:dir r_dir_perms;
+allow devicesettings_app vendor_sysfs_kgsl:file rw_file_perms;
