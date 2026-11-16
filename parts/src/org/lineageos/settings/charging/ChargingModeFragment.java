@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
+import androidx.preference.SwitchPreferenceCompat;
 
 import com.android.settingslib.widget.SettingsBasePreferenceFragment;
 
@@ -29,7 +30,8 @@ import org.lineageos.settings.R;
 public class ChargingModeFragment extends SettingsBasePreferenceFragment
         implements Preference.OnPreferenceChangeListener {
 
-    private ListPreference mChargingMode;
+    private SwitchPreferenceCompat mChargingLimiter;
+    private ListPreference mChargingProfile;
     private ChargingModeUtils mChargingModeUtils;
 
     @Override
@@ -37,29 +39,39 @@ public class ChargingModeFragment extends SettingsBasePreferenceFragment
         addPreferencesFromResource(R.xml.charging_modes);
 
         mChargingModeUtils = new ChargingModeUtils(requireContext());
-        mChargingMode = findPreference(ChargingModeUtils.KEY_PROFILE);
+        mChargingLimiter = findPreference(ChargingModeUtils.KEY_ENABLED);
+        mChargingProfile = findPreference(ChargingModeUtils.KEY_PROFILE);
 
-        if (mChargingMode == null) {
+        if (mChargingLimiter == null || mChargingProfile == null) {
             return;
         }
 
         if (!ChargingModeUtils.isSupported()) {
-            mChargingMode.setEnabled(false);
-            mChargingMode.setSummary(R.string.charging_mode_unsupported);
+            mChargingLimiter.setEnabled(false);
+            mChargingProfile.setEnabled(false);
+            mChargingLimiter.setSummary(R.string.charging_mode_unsupported);
             return;
         }
 
-        mChargingMode.setValue(mChargingModeUtils.getProfile());
-        mChargingMode.setOnPreferenceChangeListener(this);
+        mChargingLimiter.setChecked(mChargingModeUtils.isEnabled());
+        mChargingProfile.setValue(mChargingModeUtils.getProfile());
+
+        mChargingLimiter.setOnPreferenceChangeListener(this);
+        mChargingProfile.setOnPreferenceChangeListener(this);
     }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
-        if (!ChargingModeUtils.KEY_PROFILE.equals(preference.getKey())) {
+        final String key = preference.getKey();
+        final boolean applied;
+        if (ChargingModeUtils.KEY_ENABLED.equals(key)) {
+            applied = mChargingModeUtils.setEnabled((Boolean) newValue);
+        } else if (ChargingModeUtils.KEY_PROFILE.equals(key)) {
+            applied = mChargingModeUtils.setProfile((String) newValue);
+        } else {
             return false;
         }
 
-        final boolean applied = mChargingModeUtils.setProfile((String) newValue);
         if (!applied) {
             Toast.makeText(requireContext(), R.string.charging_mode_error,
                     Toast.LENGTH_SHORT).show();

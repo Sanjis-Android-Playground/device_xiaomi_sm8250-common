@@ -16,18 +16,31 @@
 -->
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="@string/charging_mode_title">
 
     <PreferenceCategory
-        android:title="@string/charging_mode_category_title">
+        android:key="charging"
+        android:title="@string/charging_category_title">
+
+        <SwitchPreferenceCompat
+            android:key="charging_limiter"
+            android:icon="@drawable/ic_charging"
+            android:title="@string/charging_limiter_title"
+            android:summary="@string/charging_limiter_summary"
+            android:persistent="true"
+            android:defaultValue="true" />
 
         <ListPreference
-            android:key="charging_mode_profile"
-            android:title="@string/charging_mode_profile_title"
-            android:summary="%s"
+            android:key="charging_limiter_profile"
+            android:icon="@drawable/ic_thermal"
+            android:title="@string/charging_limiter_profile_title"
             android:entries="@array/charging_mode_entries"
             android:entryValues="@array/charging_mode_values"
-            android:defaultValue="medium" />
+            android:defaultValue="medium"
+            android:persistent="true"
+            android:dependency="charging_limiter"
+            app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
 </PreferenceScreen>

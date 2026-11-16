@@ -152,8 +152,10 @@
 
     <!-- Charging modes -->
     <string name="charging_mode_title">Charging</string>
-    <string name="charging_mode_category_title">Charging speed</string>
-    <string name="charging_mode_profile_title">Charging mode</string>
+    <string name="charging_category_title">Charging</string>
+    <string name="charging_limiter_title">Limit charging speed</string>
+    <string name="charging_limiter_summary">Cap the charging current to keep the battery cooler. Full speed charges fastest and runs hottest.</string>
+    <string name="charging_limiter_profile_title">Charging profile</string>
     <string name="charging_mode_profile_summary">Limit how fast the phone charges</string>
     <string name="charging_mode_unsupported">Charging control is not supported on this device</string>
     <string name="charging_mode_error">Could not change the charging mode</string>
