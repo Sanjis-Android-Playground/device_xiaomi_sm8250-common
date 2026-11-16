@@ -36,7 +36,8 @@ import org.lineageos.settings.utils.FileUtils;
 public final class ChargingModeUtils {
     private static final String TAG = "ChargingModeUtils";
 
-    public static final String KEY_PROFILE = "charging_mode_profile";
+    public static final String KEY_ENABLED = "charging_limiter";
+    public static final String KEY_PROFILE = "charging_limiter_profile";
 
     public static final String PROFILE_SLOW = "slow";
     public static final String PROFILE_MEDIUM = "medium";
@@ -59,9 +60,18 @@ public final class ChargingModeUtils {
         return FileUtils.isFileReadable(NODE_CURRENT) && FileUtils.isFileWritable(NODE_ENABLE);
     }
 
+    public boolean isEnabled() {
+        return mPrefs.getBoolean(KEY_ENABLED, true);
+    }
+
     public String getProfile() {
         final String profile = mPrefs.getString(KEY_PROFILE, PROFILE_MEDIUM);
         return isValidProfile(profile) ? profile : PROFILE_MEDIUM;
+    }
+
+    public boolean setEnabled(boolean enabled) {
+        mPrefs.edit().putBoolean(KEY_ENABLED, enabled).apply();
+        return apply(enabled, getProfile());
     }
 
     public boolean setProfile(String profile) {
@@ -69,16 +79,16 @@ public final class ChargingModeUtils {
             return false;
         }
         mPrefs.edit().putString(KEY_PROFILE, profile).apply();
-        return apply(profile);
+        return apply(isEnabled(), profile);
     }
 
-    /** Re-applies the saved profile, used after boot. */
+    /** Re-applies the saved state, used after boot. */
     public boolean restore() {
-        return apply(getProfile());
+        return apply(isEnabled(), getProfile());
     }
 
-    private boolean apply(String profile) {
-        if (PROFILE_FAST.equals(profile)) {
+    private boolean apply(boolean enabled, String profile) {
+        if (!enabled || PROFILE_FAST.equals(profile)) {
             // Release the restriction, the charger negotiates its own maximum.
             return writeValue(NODE_ENABLE, 0);
         }
