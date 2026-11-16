@@ -199,4 +199,12 @@
     <string name="resolution_480p">480p</string>
     <string name="resolution_540p">540p</string>
     <string name="resolution_720p">720p</string>
+
+    <!-- Charging modes -->
+    <string name="charging_mode_title">Charging</string>
+    <string name="charging_mode_category_title">Charging speed</string>
+    <string name="charging_mode_profile_title">Charging mode</string>
+    <string name="charging_mode_profile_summary">Limit how fast the phone charges</string>
+    <string name="charging_mode_unsupported">Charging control is not supported on this device</string>
+    <string name="charging_mode_error">Could not change the charging mode</string>
 </resources>

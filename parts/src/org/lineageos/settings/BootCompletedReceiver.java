@@ -29,6 +29,7 @@ import android.os.SystemProperties;
 import android.util.Log;
 import androidx.preference.PreferenceManager;
 
+import org.lineageos.settings.charging.ChargingModeUtils;
 import org.lineageos.settings.dirac.DiracUtils;
 import org.lineageos.settings.thermal.ThermalUtils;
 import org.lineageos.settings.display.ColorService;
@@ -61,6 +62,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
         ResolutionUtils.startService(context);
         RefreshUtils.startService(context);
         TouchSamplingUtils.restoreSamplingValue(context);
+        new ChargingModeUtils(context).restore();
 
         // Advanced Display Settings activity component enablement
         boolean hasAnyDisplayFeature = DisplaySettingsActivity.isSupported(context);
