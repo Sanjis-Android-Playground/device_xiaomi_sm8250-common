@@ -4,6 +4,8 @@ allow system_app sysfs_zram:file r_file_perms;
 
 allow system_app vendor_sysfs_battery_supply:dir { search };
 allow system_app vendor_sysfs_battery_supply:file { getattr open read };
+# Charging mode (XiaomiParts) writes restrict_cur/restrict_chg
+allow system_app vendor_sysfs_battery_supply:file { write };
 
 allow system_app zygote:unix_stream_socket getopt;
 allow system_app user_profile_data_file:dir read;

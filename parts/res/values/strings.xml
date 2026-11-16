@@ -149,4 +149,13 @@
     <string name="dc_dimming_enable_title">DC Dimming</string>
     <string name="dc_dimming_enable_summary">Reduces eye strain in low light conditions</string>
     <string name="dc_dimming_enable_summary_not_supported">DC Dimming is currently not supported by the kernel</string>
+
+    <!-- Charging modes -->
+    <string name="charging_mode_title">Charging</string>
+    <string name="charging_mode_category_title">Charging speed</string>
+    <string name="charging_mode_profile_title">Charging mode</string>
+    <string name="charging_mode_profile_summary">Limit how fast the phone charges</string>
+    <string name="charging_mode_unsupported">Charging control is not supported on this device</string>
+    <string name="charging_mode_error">Could not change the charging mode</string>
+
 </resources>

@@ -121,4 +121,17 @@
         <item>2</item>
         <item>3</item>
     </string-array> 
+
+    <!-- Charging modes -->
+    <string-array name="charging_mode_entries">
+        <item>Slow (~10 W)</item>
+        <item>Medium (~18 W)</item>
+        <item>Full speed</item>
+    </string-array>
+
+    <string-array name="charging_mode_values">
+        <item>slow</item>
+        <item>medium</item>
+        <item>fast</item>
+    </string-array>
 </resources>
