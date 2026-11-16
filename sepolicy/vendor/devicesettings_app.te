@@ -28,3 +28,7 @@ allow devicesettings_app {
 }:hwservice_manager find;
 
 get_prop(devicesettings_app, vendor_displayfeature_prop)
+
+# Charging mode (XiaomiParts) uses /sys/class/qcom-battery
+allow devicesettings_app vendor_sysfs_battery_supply:dir search;
+allow devicesettings_app vendor_sysfs_battery_supply:file rw_file_perms;
