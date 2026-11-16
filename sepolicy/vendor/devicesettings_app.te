@@ -18,3 +18,7 @@ allow devicesettings_app vendor_sysfs_graphics:file rw_file_perms;
 
 # Allow devicesettings_app to r/w livedisplay_tuneable
 allow devicesettings_app sysfs_livedisplay_tuneable:file rw_file_perms;
+
+# Charging mode (XiaomiParts) uses /sys/class/qcom-battery
+allow devicesettings_app vendor_sysfs_battery_supply:dir search;
+allow devicesettings_app vendor_sysfs_battery_supply:file rw_file_perms;
