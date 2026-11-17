@@ -30,7 +30,6 @@ public class DisplaySettingsActivity extends CollapsingToolbarBaseActivity {
     public static boolean isSupported(Context context) {
         return DisplayUtils.isDcSupported()
                 || TrueToneController.isSupported(context)
-                || DisplayUtils.isHbmSupported()
                 || DozeBrightnessController.isSupported();
     }
 

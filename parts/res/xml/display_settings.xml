@@ -28,12 +28,6 @@
         android:title="@string/screen_true_color_title"
         android:summary="@string/screen_true_color_summary" />
 
-    <SwitchPreferenceCompat
-        android:key="hbm_mode"
-        android:defaultValue="false"
-        android:title="@string/hbm_mode_title"
-        android:summary="@string/hbm_mode_summary" />
-
     <ListPreference
         android:key="doze_brightness_mode"
         android:defaultValue="0"

@@ -33,13 +33,11 @@ public class DisplaySettingsFragment extends SettingsBasePreferenceFragment impl
         OnPreferenceChangeListener {
 
     public static final String KEY_TRUE_TONE = "screen_true_color";
-    public static final String KEY_HBM = "hbm_mode";
     public static final String KEY_DOZE_BRIGHTNESS = "doze_brightness_mode";
 
     private SwitchPreferenceCompat mDcDimmingPreference;
     private String DC_DIMMING_ENABLE_KEY;
     private SwitchPreferenceCompat mTrueTonePreference;
-    private SwitchPreferenceCompat mHbmPreference;
     private ListPreference mDozeBrightnessPreference;
 
     @Override
@@ -62,16 +60,6 @@ public class DisplaySettingsFragment extends SettingsBasePreferenceFragment impl
                 mTrueTonePreference.setOnPreferenceChangeListener(this);
             } else {
                 getPreferenceScreen().removePreference(mTrueTonePreference);
-            }
-        }
-
-        mHbmPreference = (SwitchPreferenceCompat) findPreference(KEY_HBM);
-        if (mHbmPreference != null) {
-            if (DisplayUtils.isHbmSupported()) {
-                mHbmPreference.setOnPreferenceChangeListener(this);
-            } else {
-                mHbmPreference.setSummary(R.string.hbm_enable_summary_not_supported);
-                mHbmPreference.setEnabled(false);
             }
         }
 
@@ -102,9 +90,6 @@ public class DisplaySettingsFragment extends SettingsBasePreferenceFragment impl
                     KEY_TRUE_TONE, enabled ? 1 : 0, UserHandle.USER_CURRENT);
             DfWrapper.setDisplayFeature(DfWrapper.FEATURE_TRUE_TONE, enabled ? 1 : 0, 0);
             return true;
-        }
-        if (KEY_HBM.equals(preference.getKey())) {
-            return DisplayUtils.setHbmEnabled(requireContext(), (Boolean) newValue);
         }
         if (KEY_DOZE_BRIGHTNESS.equals(preference.getKey())) {
             int value = Integer.parseInt((String) newValue);

@@ -26,6 +26,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.SystemProperties;
+import android.os.UserHandle;
 import android.util.Log;
 import androidx.preference.PreferenceManager;
 
@@ -83,9 +84,17 @@ public class BootCompletedReceiver extends BroadcastReceiver {
         }
 
         // High Brightness Mode
-        boolean hbmEnabled = sharedPrefs.getBoolean(DisplayNodes.getHbmEnableKey(), false);
         if (DisplayUtils.isHbmSupported()) {
-            DisplayUtils.setHbmEnabled(context, hbmEnabled);
+            org.lineageos.settings.hbm.HBMManager.initializeOnBoot(context);
+            pm.setComponentEnabledSetting(
+                    new ComponentName(context, org.lineageos.settings.hbm.HBMActivity.class),
+                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                    PackageManager.DONT_KILL_APP);
+            if (sharedPrefs.getBoolean(org.lineageos.settings.hbm.HBMManager.PREF_AUTO_HBM, false)) {
+                context.startServiceAsUser(
+                        new Intent(context, org.lineageos.settings.hbm.AutoHBMService.class),
+                        UserHandle.CURRENT);
+            }
         }
     }
 }
