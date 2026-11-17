@@ -35,7 +35,6 @@ public class ColorService extends Service {
 
     // Forwarding keys for external callers
     public static final String KEY_TRUE_TONE = TrueToneController.KEY_TRUE_TONE;
-    public static final String KEY_SUNLIGHT_MODE = SunlightController.KEY_SUNLIGHT_MODE;
     public static final String KEY_DOZE_BRIGHTNESS = DozeBrightnessController.KEY_DOZE_BRIGHTNESS;
 
     private static final int DEFAULT_COLOR_MODE = SystemProperties.getInt(
@@ -64,7 +63,6 @@ public class ColorService extends Service {
 
     // Decoupled controllers
     private TrueToneController mTrueToneController;
-    private SunlightController mSunlightController;
     private DozeBrightnessController mDozeBrightnessController;
 
     private final Runnable mRestoreColorModeRunnable = () -> {
@@ -126,9 +124,6 @@ public class ColorService extends Service {
                 break;
         }
 
-        if (mSunlightController != null) {
-            mSunlightController.onScreenStateChanged(mScreenOn, mIsDozing);
-        }
         if (mDozeBrightnessController != null) {
             mDozeBrightnessController.onDisplayStateChanged(state);
         }
@@ -142,7 +137,6 @@ public class ColorService extends Service {
 
         // Initialize decoupled controllers
         mTrueToneController = new TrueToneController(this, mHandler);
-        mSunlightController = new SunlightController(this, mHandler);
         mDozeBrightnessController = new DozeBrightnessController(this, mHandler);
 
         if (mDisplayManager != null) {
@@ -150,7 +144,6 @@ public class ColorService extends Service {
             Display defaultDisplay = mDisplayManager.getDisplay(Display.DEFAULT_DISPLAY);
             if (defaultDisplay != null) {
                 mScreenOn = (defaultDisplay.getState() == Display.STATE_ON);
-                mSunlightController.onScreenStateChanged(mScreenOn, mIsDozing);
             }
         }
 
@@ -183,9 +176,6 @@ public class ColorService extends Service {
 
         if (mTrueToneController != null) {
             mTrueToneController.onDestroy();
-        }
-        if (mSunlightController != null) {
-            mSunlightController.onDestroy();
         }
         if (mDozeBrightnessController != null) {
             mDozeBrightnessController.onDestroy();

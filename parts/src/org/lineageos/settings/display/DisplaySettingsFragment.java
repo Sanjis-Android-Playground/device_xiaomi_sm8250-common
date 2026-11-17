@@ -33,13 +33,13 @@ public class DisplaySettingsFragment extends SettingsBasePreferenceFragment impl
         OnPreferenceChangeListener {
 
     public static final String KEY_TRUE_TONE = "screen_true_color";
-    public static final String KEY_SUNLIGHT_MODE = "sunlight_mode";
+    public static final String KEY_HBM = "hbm_mode";
     public static final String KEY_DOZE_BRIGHTNESS = "doze_brightness_mode";
 
     private SwitchPreferenceCompat mDcDimmingPreference;
     private String DC_DIMMING_ENABLE_KEY;
     private SwitchPreferenceCompat mTrueTonePreference;
-    private SwitchPreferenceCompat mSunlightModePreference;
+    private SwitchPreferenceCompat mHbmPreference;
     private ListPreference mDozeBrightnessPreference;
 
     @Override
@@ -65,19 +65,13 @@ public class DisplaySettingsFragment extends SettingsBasePreferenceFragment impl
             }
         }
 
-        mSunlightModePreference = (SwitchPreferenceCompat) findPreference(KEY_SUNLIGHT_MODE);
-        if (mSunlightModePreference != null) {
-            if (SunlightController.isSupported()) {
-                final boolean autoBrightness = Settings.System.getIntForUser(
-                        requireContext().getContentResolver(),
-                        Settings.System.SCREEN_BRIGHTNESS_MODE, 0, UserHandle.USER_CURRENT)
-                        == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC;
-                mSunlightModePreference.setChecked(Settings.System.getIntForUser(
-                        requireContext().getContentResolver(), KEY_SUNLIGHT_MODE, 0, UserHandle.USER_CURRENT) != 0);
-                mSunlightModePreference.setEnabled(!autoBrightness);
-                mSunlightModePreference.setOnPreferenceChangeListener(this);
+        mHbmPreference = (SwitchPreferenceCompat) findPreference(KEY_HBM);
+        if (mHbmPreference != null) {
+            if (DisplayUtils.isHbmSupported()) {
+                mHbmPreference.setOnPreferenceChangeListener(this);
             } else {
-                getPreferenceScreen().removePreference(mSunlightModePreference);
+                mHbmPreference.setSummary(R.string.hbm_enable_summary_not_supported);
+                mHbmPreference.setEnabled(false);
             }
         }
 
@@ -109,11 +103,8 @@ public class DisplaySettingsFragment extends SettingsBasePreferenceFragment impl
             DfWrapper.setDisplayFeature(DfWrapper.FEATURE_TRUE_TONE, enabled ? 1 : 0, 0);
             return true;
         }
-        if (KEY_SUNLIGHT_MODE.equals(preference.getKey())) {
-            boolean enabled = (Boolean) newValue;
-            Settings.System.putIntForUser(requireContext().getContentResolver(),
-                    KEY_SUNLIGHT_MODE, enabled ? 1 : 0, UserHandle.USER_CURRENT);
-            return true;
+        if (KEY_HBM.equals(preference.getKey())) {
+            return DisplayUtils.setHbmEnabled(requireContext(), (Boolean) newValue);
         }
         if (KEY_DOZE_BRIGHTNESS.equals(preference.getKey())) {
             int value = Integer.parseInt((String) newValue);

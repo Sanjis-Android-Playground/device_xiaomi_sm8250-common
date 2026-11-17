@@ -34,6 +34,7 @@ import org.lineageos.settings.dirac.DiracUtils;
 import org.lineageos.settings.thermal.ThermalUtils;
 import org.lineageos.settings.display.ColorService;
 import org.lineageos.settings.display.DisplaySettingsActivity;
+import org.lineageos.settings.display.DisplayNodes;
 import org.lineageos.settings.display.DisplayUtils;
 import org.lineageos.settings.refreshrate.RefreshUtils;
 import org.lineageos.settings.resolution.ResolutionUtils;
@@ -79,6 +80,12 @@ public class BootCompletedReceiver extends BroadcastReceiver {
         boolean dcDimmingEnabled = sharedPrefs.getBoolean(DC_DIMMING_ENABLE_KEY, false);
         if (DisplayUtils.isDcSupported()) {
             DisplayUtils.restoreDcDimming(dcDimmingEnabled);
+        }
+
+        // High Brightness Mode
+        boolean hbmEnabled = sharedPrefs.getBoolean(DisplayNodes.getHbmEnableKey(), false);
+        if (DisplayUtils.isHbmSupported()) {
+            DisplayUtils.setHbmEnabled(context, hbmEnabled);
         }
     }
 }

@@ -40,7 +40,6 @@ ro.vendor.dfps.enable                           u:object_r:vendor_displayfeature
 ro.vendor.display.default_fps                   u:object_r:vendor_displayfeature_prop:s0
 ro.vendor.display.doze_brightness.enable       u:object_r:vendor_displayfeature_prop:s0
 ro.vendor.display.smartpen.idle.enable          u:object_r:vendor_displayfeature_prop:s0
-ro.vendor.display.sunlight.enable              u:object_r:vendor_displayfeature_prop:s0
 ro.vendor.display.touch.idle.enable             u:object_r:vendor_displayfeature_prop:s0
 ro.vendor.display.truetone.enable               u:object_r:vendor_displayfeature_prop:s0
 ro.vendor.display.type                          u:object_r:vendor_displayfeature_prop:s0
