@@ -1,1 +1,4 @@
 dontaudit vendor_ims vendor_diag_device:chr_file rw_file_perms;
+
+# Unlabeled Android properties resolve to default_prop; these apps only read
+dontaudit { rild gamebar_app vendor_qtidataservices_app } default_prop:file read;

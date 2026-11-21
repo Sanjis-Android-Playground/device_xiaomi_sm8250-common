@@ -1,2 +1,6 @@
 allow surfaceflinger hal_graphics_composer_default:file { open };
 allow surfaceflinger vendor_firmware_file:dir search;
+
+# Adreno firmware is loaded by the GL driver inside RenderEngine, but a
+# coredomain may not read vendor_firmware_file: it is a neverallow.
+dontaudit surfaceflinger vendor_firmware_file:file read;

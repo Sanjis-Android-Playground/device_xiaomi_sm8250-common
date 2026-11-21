@@ -1,0 +1,3 @@
+# The HAL reads persist.vendor.cap_configstore_debug even on user builds,
+# where the AOSP rule is wrapped in userdebug_or_eng().
+get_prop(vendor_hal_capabilityconfigstore_qti_default, vendor_cap_configstore_dbg_prop)

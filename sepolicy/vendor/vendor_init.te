@@ -17,3 +17,7 @@ set_prop(vendor_init, vendor_fingerprint_prop)
 set_prop(vendor_init, vendor_default_prop)
 
 allow vendor_init vendor_fingerprint_persist_data:dir { getattr open read };
+
+# early-init mkdir on /mnt/vendor/persist/{fpc,goodix} before relabel;
+# fingerprint_data_file is a core data type, so only silence it.
+dontaudit vendor_init fingerprint_data_file:dir getattr;
