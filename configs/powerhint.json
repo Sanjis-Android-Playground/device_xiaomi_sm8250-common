@@ -24,6 +24,81 @@
       "TargetTimeFactor": 1.0,
       "StaleTimeFactor": 5.0,
       "GpuBoost": false
+    },
+    {
+      "Name": "REFRESH_60HZ",
+      "PID_On": true,
+      "PID_Po": 5.0,
+      "PID_Pu": 3.0,
+      "PID_I": 0.0,
+      "PID_I_Init": 0,
+      "PID_I_High": 0,
+      "PID_I_Low": 0,
+      "PID_Do": 0.0,
+      "PID_Du": 0.0,
+      "SamplingWindow_P": 1,
+      "SamplingWindow_I": 0,
+      "SamplingWindow_D": 1,
+      "UclampMin_On": true,
+      "UclampMin_Init": 128,
+      "UclampMin_LoadUp": 448,
+      "UclampMin_LoadReset": 128,
+      "UclampMin_High": 448,
+      "UclampMin_Low": 0,
+      "ReportingRateLimitNs": 16666666,
+      "TargetTimeFactor": 1.0,
+      "StaleTimeFactor": 5.0,
+      "GpuBoost": false
+    },
+    {
+      "Name": "REFRESH_90HZ",
+      "PID_On": true,
+      "PID_Po": 5.0,
+      "PID_Pu": 3.0,
+      "PID_I": 0.0,
+      "PID_I_Init": 0,
+      "PID_I_High": 0,
+      "PID_I_Low": 0,
+      "PID_Do": 0.0,
+      "PID_Du": 0.0,
+      "SamplingWindow_P": 1,
+      "SamplingWindow_I": 0,
+      "SamplingWindow_D": 1,
+      "UclampMin_On": true,
+      "UclampMin_Init": 128,
+      "UclampMin_LoadUp": 448,
+      "UclampMin_LoadReset": 128,
+      "UclampMin_High": 448,
+      "UclampMin_Low": 0,
+      "ReportingRateLimitNs": 11111111,
+      "TargetTimeFactor": 1.0,
+      "StaleTimeFactor": 5.0,
+      "GpuBoost": false
+    },
+    {
+      "Name": "REFRESH_120HZ",
+      "PID_On": true,
+      "PID_Po": 5.0,
+      "PID_Pu": 3.0,
+      "PID_I": 0.0,
+      "PID_I_Init": 0,
+      "PID_I_High": 0,
+      "PID_I_Low": 0,
+      "PID_Do": 0.0,
+      "PID_Du": 0.0,
+      "SamplingWindow_P": 1,
+      "SamplingWindow_I": 0,
+      "SamplingWindow_D": 1,
+      "UclampMin_On": true,
+      "UclampMin_Init": 128,
+      "UclampMin_LoadUp": 448,
+      "UclampMin_LoadReset": 128,
+      "UclampMin_High": 448,
+      "UclampMin_Low": 0,
+      "ReportingRateLimitNs": 8333333,
+      "TargetTimeFactor": 1.0,
+      "StaleTimeFactor": 5.0,
+      "GpuBoost": false
     }
   ],
   "Nodes": [
@@ -354,6 +429,58 @@
       ],
       "DefaultIndex": 0,
       "ResetOnInit": true
+    },
+    {
+      "Name": "ADPFProfileApp",
+      "Paths": [
+        "<AdpfConfig>:APP"
+      ],
+      "Values": [
+        "REFRESH_120HZ",
+        "REFRESH_90HZ",
+        "REFRESH_60HZ"
+      ],
+      "DefaultIndex": 0,
+      "Type": "Event"
+    },
+    {
+      "Name": "ADPFProfileSurfaceFlinger",
+      "Paths": [
+        "<AdpfConfig>:SURFACEFLINGER"
+      ],
+      "Values": [
+        "REFRESH_120HZ",
+        "REFRESH_90HZ",
+        "REFRESH_60HZ"
+      ],
+      "DefaultIndex": 0,
+      "Type": "Event"
+    },
+    {
+      "Name": "ADPFProfileHwui",
+      "Paths": [
+        "<AdpfConfig>:HWUI"
+      ],
+      "Values": [
+        "REFRESH_120HZ",
+        "REFRESH_90HZ",
+        "REFRESH_60HZ"
+      ],
+      "DefaultIndex": 0,
+      "Type": "Event"
+    },
+    {
+      "Name": "ADPFProfileSystemUi",
+      "Paths": [
+        "<AdpfConfig>:SYSTEM_UI"
+      ],
+      "Values": [
+        "REFRESH_120HZ",
+        "REFRESH_90HZ",
+        "REFRESH_60HZ"
+      ],
+      "DefaultIndex": 0,
+      "Type": "Event"
     }
   ],
   "Actions": [
@@ -938,6 +1065,78 @@
       "Node": "DoubleTapToWake",
       "Duration": 0,
       "Value": "1"
+    },
+    {
+      "PowerHint": "REFRESH_120HZ",
+      "Node": "ADPFProfileApp",
+      "Duration": 0,
+      "Value": "REFRESH_120HZ"
+    },
+    {
+      "PowerHint": "REFRESH_120HZ",
+      "Node": "ADPFProfileSurfaceFlinger",
+      "Duration": 0,
+      "Value": "REFRESH_120HZ"
+    },
+    {
+      "PowerHint": "REFRESH_120HZ",
+      "Node": "ADPFProfileHwui",
+      "Duration": 0,
+      "Value": "REFRESH_120HZ"
+    },
+    {
+      "PowerHint": "REFRESH_120HZ",
+      "Node": "ADPFProfileSystemUi",
+      "Duration": 0,
+      "Value": "REFRESH_120HZ"
+    },
+    {
+      "PowerHint": "REFRESH_90HZ",
+      "Node": "ADPFProfileApp",
+      "Duration": 0,
+      "Value": "REFRESH_90HZ"
+    },
+    {
+      "PowerHint": "REFRESH_90HZ",
+      "Node": "ADPFProfileSurfaceFlinger",
+      "Duration": 0,
+      "Value": "REFRESH_90HZ"
+    },
+    {
+      "PowerHint": "REFRESH_90HZ",
+      "Node": "ADPFProfileHwui",
+      "Duration": 0,
+      "Value": "REFRESH_90HZ"
+    },
+    {
+      "PowerHint": "REFRESH_90HZ",
+      "Node": "ADPFProfileSystemUi",
+      "Duration": 0,
+      "Value": "REFRESH_90HZ"
+    },
+    {
+      "PowerHint": "REFRESH_60HZ",
+      "Node": "ADPFProfileApp",
+      "Duration": 0,
+      "Value": "REFRESH_60HZ"
+    },
+    {
+      "PowerHint": "REFRESH_60HZ",
+      "Node": "ADPFProfileSurfaceFlinger",
+      "Duration": 0,
+      "Value": "REFRESH_60HZ"
+    },
+    {
+      "PowerHint": "REFRESH_60HZ",
+      "Node": "ADPFProfileHwui",
+      "Duration": 0,
+      "Value": "REFRESH_60HZ"
+    },
+    {
+      "PowerHint": "REFRESH_60HZ",
+      "Node": "ADPFProfileSystemUi",
+      "Duration": 0,
+      "Value": "REFRESH_60HZ"
     }
   ]
 }
