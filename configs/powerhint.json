@@ -182,7 +182,11 @@
       "Values": [
         "0",
         "1",
-        "5"
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
       ],
       "Comments": [
         "0 => 683000000",
@@ -191,7 +195,8 @@
         "3 => 490000000",
         "4 => 441600000",
         "5 => 400000000",
-        "level 6 (305000000) is reachable in the DT but min_pwrlevel is capped at num_pwrlevels - 2, so max_pwrlevel can never exceed 5"
+        "6 => 305000000",
+        "level 7 is the hidden freq=0 slot: kgsl clamps writes to num_pwrlevels-2 (=6)"
       ],
       "DefaultIndex": 0,
       "ResetOnInit": true
@@ -202,18 +207,22 @@
       "Values": [
         "0",
         "1",
-        "7"
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
       ],
       "DefaultIndex": 2,
       "Comments": [
-        "0 => 670000000",
+        "0 => 683000000",
         "1 => 587000000",
         "2 => 525000000",
         "3 => 490000000",
         "4 => 441600000",
         "5 => 400000000",
         "6 => 305000000",
-        "7 => 150000000"
+        "level 7 is the hidden freq=0 slot: kgsl clamps writes to num_pwrlevels-2 (=6)"
       ],
       "ResetOnInit": true
     },
